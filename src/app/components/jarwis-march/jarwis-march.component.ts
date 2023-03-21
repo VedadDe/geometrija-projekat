@@ -3,7 +3,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 @Component({
   selector: 'app-jarwis-march',
   templateUrl: './jarwis-march.component.html',
-  styleUrls: ['./jarwis-march.component.css']
+  styleUrls: ['./jarwis-march.component.scss']
 })
 export class JarwisMarchComponent {
   @ViewChild('canvas', { static: true })
