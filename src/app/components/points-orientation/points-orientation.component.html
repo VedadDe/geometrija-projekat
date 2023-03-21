@@ -1,0 +1,10 @@
+<h1>Check Orientation of Three Points</h1>
+
+<canvas #canvas (click)="canvasClick($event)"></canvas>
+
+<div class="modal" *ngIf="showModal">
+  <div class="modal-content">
+    <h2>The points are {{ isClockwise ? 'clockwise' : 'counter-clockwise' }}.</h2>
+    <button (click)="closeModal()">OK</button>
+  </div>
+</div>

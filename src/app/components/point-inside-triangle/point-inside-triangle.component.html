@@ -1,0 +1,10 @@
+<h1>Angular Point Inside Triangle</h1>
+
+<canvas #canvas (click)="canvasClick($event)"></canvas>
+
+<div class="modal" *ngIf="showModal">
+  <div class="modal-content">
+    <h2>The point is {{ isInside ? 'inside' : 'outside' }} the triangle.</h2>
+    <button (click)="closeModal()">OK</button>
+  </div>
+</div>

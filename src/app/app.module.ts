@@ -3,10 +3,20 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { JarwisMarchComponent } from './components/jarwis-march/jarwis-march.component';
+import { PointInsideTriangleComponent } from './components/point-inside-triangle/point-inside-triangle.component';
+import { PointsOrientationComponent } from './components/points-orientation/points-orientation.component';
+import { CheckIfQuadrilateralIsConvexComponent } from './components/check-if-quadrilateral-is-convex/check-if-quadrilateral-is-convex.component';
+import { PointInPolygonComponent } from './components/point-in-polygon/point-in-polygon.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    JarwisMarchComponent,
+    PointInsideTriangleComponent,
+    PointsOrientationComponent,
+    CheckIfQuadrilateralIsConvexComponent,
+    PointInPolygonComponent
   ],
   imports: [
     BrowserModule,
