@@ -5,6 +5,7 @@ import { JarwisMarchComponent } from './components/jarwis-march/jarwis-march.com
 import { PointInPolygonComponent } from './components/point-in-polygon/point-in-polygon.component';
 import { PointInsideTriangleComponent } from './components/point-inside-triangle/point-inside-triangle.component';
 import { PointsOrientationComponent } from './components/points-orientation/points-orientation.component';
+import { TwoLinesIntersectionsComponent } from './components/two-lines-intersections/two-lines-intersections.component';
 
 const routes: Routes = [  
 { path: 'jarwis-march', component: JarwisMarchComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
 { path: 'points-orientation', component: PointsOrientationComponent},
 { path: 'convex-quadrilateral', component: CheckIfQuadrilateralIsConvexComponent},
 { path: 'point-in-polygon', component: PointInPolygonComponent},
+{ path: 'two-segments', component: TwoLinesIntersectionsComponent},
 
 
 ];

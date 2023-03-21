@@ -8,6 +8,7 @@ import { PointInsideTriangleComponent } from './components/point-inside-triangle
 import { PointsOrientationComponent } from './components/points-orientation/points-orientation.component';
 import { CheckIfQuadrilateralIsConvexComponent } from './components/check-if-quadrilateral-is-convex/check-if-quadrilateral-is-convex.component';
 import { PointInPolygonComponent } from './components/point-in-polygon/point-in-polygon.component';
+import { TwoLinesIntersectionsComponent } from './components/two-lines-intersections/two-lines-intersections.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { PointInPolygonComponent } from './components/point-in-polygon/point-in-
     PointInsideTriangleComponent,
     PointsOrientationComponent,
     CheckIfQuadrilateralIsConvexComponent,
-    PointInPolygonComponent
+    PointInPolygonComponent,
+    TwoLinesIntersectionsComponent
   ],
   imports: [
     BrowserModule,
