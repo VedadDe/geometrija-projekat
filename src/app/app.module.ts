@@ -9,6 +9,7 @@ import { PointsOrientationComponent } from './components/points-orientation/poin
 import { CheckIfQuadrilateralIsConvexComponent } from './components/check-if-quadrilateral-is-convex/check-if-quadrilateral-is-convex.component';
 import { PointInPolygonComponent } from './components/point-in-polygon/point-in-polygon.component';
 import { TwoLinesIntersectionsComponent } from './components/two-lines-intersections/two-lines-intersections.component';
+import { MultipleSegmentsComponent } from './components/multiple-segments/multiple-segments.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { TwoLinesIntersectionsComponent } from './components/two-lines-intersect
     PointsOrientationComponent,
     CheckIfQuadrilateralIsConvexComponent,
     PointInPolygonComponent,
-    TwoLinesIntersectionsComponent
+    TwoLinesIntersectionsComponent,
+    MultipleSegmentsComponent
   ],
   imports: [
     BrowserModule,
