@@ -10,6 +10,8 @@ import { CheckIfQuadrilateralIsConvexComponent } from './components/check-if-qua
 import { PointInPolygonComponent } from './components/point-in-polygon/point-in-polygon.component';
 import { TwoLinesIntersectionsComponent } from './components/two-lines-intersections/two-lines-intersections.component';
 import { MultipleSegmentsComponent } from './components/multiple-segments/multiple-segments.component';
+import { SimplePolygonComponent } from './components/simple-polygon/simple-polygon.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,11 +22,13 @@ import { MultipleSegmentsComponent } from './components/multiple-segments/multip
     CheckIfQuadrilateralIsConvexComponent,
     PointInPolygonComponent,
     TwoLinesIntersectionsComponent,
-    MultipleSegmentsComponent
+    MultipleSegmentsComponent,
+    SimplePolygonComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule, 
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

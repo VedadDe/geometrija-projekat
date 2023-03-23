@@ -6,6 +6,7 @@ import { MultipleSegmentsComponent } from './components/multiple-segments/multip
 import { PointInPolygonComponent } from './components/point-in-polygon/point-in-polygon.component';
 import { PointInsideTriangleComponent } from './components/point-inside-triangle/point-inside-triangle.component';
 import { PointsOrientationComponent } from './components/points-orientation/points-orientation.component';
+import { SimplePolygonComponent } from './components/simple-polygon/simple-polygon.component';
 import { TwoLinesIntersectionsComponent } from './components/two-lines-intersections/two-lines-intersections.component';
 
 const routes: Routes = [  
@@ -16,7 +17,7 @@ const routes: Routes = [
 { path: 'point-in-polygon', component: PointInPolygonComponent},
 { path: 'two-segments', component: TwoLinesIntersectionsComponent},
 { path: 'multiple-segments', component: MultipleSegmentsComponent},
-
+{ path: 'simple-polygon', component: SimplePolygonComponent},
 
 ];
 @NgModule({
