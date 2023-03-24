@@ -1,0 +1,9 @@
+<div>
+    <canvas #canvas (click)="onCanvasClick($event)" width="400" height="400"></canvas>
+    <button (click)="clearCanvas()">Clear</button>
+  </div>
+  
+  <p *ngIf="isConvex !== null">
+    Quadrilateral is {{ isConvex ? 'convex' : 'non-convex' }}
+  </p>
+      

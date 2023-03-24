@@ -12,6 +12,7 @@ import { TwoLinesIntersectionsComponent } from './components/two-lines-intersect
 import { MultipleSegmentsComponent } from './components/multiple-segments/multiple-segments.component';
 import { SimplePolygonComponent } from './components/simple-polygon/simple-polygon.component';
 import { FormsModule } from '@angular/forms';
+import { ConvexCheckComponent } from './components/convex-check/convex-check.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { FormsModule } from '@angular/forms';
     PointInPolygonComponent,
     TwoLinesIntersectionsComponent,
     MultipleSegmentsComponent,
-    SimplePolygonComponent
+    SimplePolygonComponent,
+    ConvexCheckComponent
   ],
   imports: [
     BrowserModule,

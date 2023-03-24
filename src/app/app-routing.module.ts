@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CheckIfQuadrilateralIsConvexComponent } from './components/check-if-quadrilateral-is-convex/check-if-quadrilateral-is-convex.component';
+import { ConvexCheckComponent } from './components/convex-check/convex-check.component';
 import { JarwisMarchComponent } from './components/jarwis-march/jarwis-march.component';
 import { MultipleSegmentsComponent } from './components/multiple-segments/multiple-segments.component';
 import { PointInPolygonComponent } from './components/point-in-polygon/point-in-polygon.component';
@@ -18,8 +19,9 @@ const routes: Routes = [
 { path: 'two-segments', component: TwoLinesIntersectionsComponent},
 { path: 'multiple-segments', component: MultipleSegmentsComponent},
 { path: 'simple-polygon', component: SimplePolygonComponent},
-
+{ path: 'convex-check', component: ConvexCheckComponent},
 ];
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
