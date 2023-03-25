@@ -97,4 +97,43 @@ export class SimplePolygonComponent implements AfterViewInit {
     this.context.fillStyle = 'black';
     this.context.fill();
   }
+  onCanvasClick(event: MouseEvent): void {
+    const rect = this.canvasRef.nativeElement.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+  
+    if (this.isPointInsidePolygon({ x, y })) {
+      console.log('The point is inside the polygon.');
+    } else {
+      console.log('The point is outside the polygon.');
+    }
+  }
+  
+  isPointInsidePolygon(point: { x: number; y: number }): boolean {
+    let intersections = 0;
+    const testLine = { a: point, b: { x: this.canvasRef.nativeElement.width + 1, y: point.y } };
+  
+    for (let i = 0; i < this.points.length; i++) {
+      const a = this.points[i];
+      const b = this.points[(i + 1) % this.points.length];
+  
+      const isIntersecting = this.doLineSegmentsIntersect(a, b, testLine.a, testLine.b);
+      if (isIntersecting) {
+        intersections++;
+      }
+    }
+  
+    return intersections % 2 !== 0;
+  }
+  
+  doLineSegmentsIntersect(a1: { x: number; y: number }, a2: { x: number; y: number }, b1: { x: number; y: number }, b2: { x: number; y: number }): boolean {
+    const d = (a1.x - a2.x) * (b2.y - b1.y) - (a1.y - a2.y) * (b2.x - b1.x);
+    if (d === 0) return false;
+  
+    const s = ((a1.x - b1.x) * (b2.y - b1.y) - (a1.y - b1.y) * (b2.x - b1.x)) / d;
+    const t = ((a1.x - a2.x) * (a1.y - b1.y) - (a1.y - a2.y) * (a1.x - b1.x)) / d;
+  
+    return s >= 0 && s <= 1 && t >= 0 && t <= 1;
+  }
+  
 }

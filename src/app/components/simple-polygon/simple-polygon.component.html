@@ -1,6 +1,6 @@
 <div class="container">
     <input [(ngModel)]="n" type="number" min="3" placeholder="Enter the number of points (n)" />
     <button (click)="generatePolygon()">Create Polygon</button>
-    <canvas #polygonCanvas></canvas>
-  </div>
+    <canvas #polygonCanvas (click)="onCanvasClick($event)"></canvas>
+</div>
   
