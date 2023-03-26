@@ -11,7 +11,10 @@ export class SimplePolygonComponent implements AfterViewInit {
   private context!: CanvasRenderingContext2D;
   private points: { x: number; y: number }[] = [];
   n: number = 3;
-
+  lineStart: { x: number; y: number } | null = null;
+  lineEnd: { x: number; y: number } | null = null;
+  segment: boolean = false;
+  
   ngAfterViewInit(): void {
     const context = this.canvasRef.nativeElement.getContext('2d');
     if (!context) {
@@ -49,7 +52,9 @@ export class SimplePolygonComponent implements AfterViewInit {
       }
     }
   }
-
+  segmentOrPoint(){
+    this.segment = ! this.segment
+  }
   private generateRandomPoints(n: number): { x: number; y: number }[] {
     const points: { x: number; y: number }[] = [];
     const width = this.canvasRef.nativeElement.width;
@@ -97,17 +102,17 @@ export class SimplePolygonComponent implements AfterViewInit {
     this.context.fillStyle = 'black';
     this.context.fill();
   }
-  onCanvasClick(event: MouseEvent): void {
-    const rect = this.canvasRef.nativeElement.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+  // onCanvasClick(event: MouseEvent): void {
+  //   const rect = this.canvasRef.nativeElement.getBoundingClientRect();
+  //   const x = event.clientX - rect.left;
+  //   const y = event.clientY - rect.top;
   
-    if (this.isPointInsidePolygon({ x, y })) {
-      console.log('The point is inside the polygon.');
-    } else {
-      console.log('The point is outside the polygon.');
-    }
-  }
+  //   if (this.isPointInsidePolygon({ x, y })) {
+  //     console.log('The point is inside the polygon.');
+  //   } else {
+  //     console.log('The point is outside the polygon.');
+  //   }
+  // }
   
   isPointInsidePolygon(point: { x: number; y: number }): boolean {
     let intersections = 0;
@@ -135,5 +140,65 @@ export class SimplePolygonComponent implements AfterViewInit {
   
     return s >= 0 && s <= 1 && t >= 0 && t <= 1;
   }
+
+  onCanvasClick(event: MouseEvent): void {
+    if(this.segment){
+    const rect = this.canvasRef.nativeElement.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+  
+    if (!this.lineStart) {
+      this.lineStart = { x, y };
+    } else if (!this.lineEnd) {
+      this.lineEnd = { x, y };
+      this.drawLineSegment(this.lineStart, this.lineEnd);
+  
+      if (this.doPolylineSegmentsIntersect(this.lineStart, this.lineEnd)) {
+        alert('The line segment intersects the polygon.');
+      } else {
+        const midpoint = { x: (this.lineStart.x + this.lineEnd.x) / 2, y: (this.lineStart.y + this.lineEnd.y) / 2 };
+        if (this.isPointInsidePolygon(midpoint)) {
+          alert('The line segment is inside the polygon.');
+        } else {
+          alert('The line segment is outside the polygon.');
+        }
+      }
+  
+      // Reset the line segment points
+      this.lineStart = null;
+      this.lineEnd = null;
+    }}else{
+        const rect = this.canvasRef.nativeElement.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+  
+    if (this.isPointInsidePolygon({ x, y })) {
+      alert('The point is inside the polygon.');
+    } else {
+      alert('The point is outside the polygon.');
+    }
+    }
+  }
+  
+
+drawLineSegment(start: { x: number; y: number }, end: { x: number; y: number }): void {
+  this.context.beginPath();
+  this.context.moveTo(start.x, start.y);
+  this.context.lineTo(end.x, end.y);
+  this.context.stroke();
+}
+
+doPolylineSegmentsIntersect(lineStart: { x: number; y: number }, lineEnd: { x: number; y: number }): boolean {
+  for (let i = 0; i < this.points.length; i++) {
+    const a = this.points[i];
+    const b = this.points[(i + 1) % this.points.length];
+
+    if (this.doLineSegmentsIntersect(a, b, lineStart, lineEnd)) {
+      return true;
+    }
+  }
+
+  return false;
+}
   
 }
