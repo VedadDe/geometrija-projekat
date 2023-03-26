@@ -6,192 +6,107 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
   styleUrls: ['./jarwis-march.component.scss']
 })
 export class JarwisMarchComponent {
-  @ViewChild('canvas', { static: true })
-  canvas!: ElementRef<HTMLCanvasElement>; // note the "!" operator
+  @ViewChild('canvas', { static: true })  canvas!: ElementRef<HTMLCanvasElement>; 
 
-  points: { x: number; y: number }[] = [];
+  tacke: { x: number; y: number }[] = [];
 
-  // ngOnInit(): void {
-  //   const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
-  //   const context = canvasEl.getContext('2d');
-  //   canvasEl.width = 400;
-  //   canvasEl.height = 400;
-  //   canvasEl.addEventListener('click', (event: MouseEvent) => {
-  //     const rect = canvasEl.getBoundingClientRect();
-  //     const x = event.clientX - rect.left;
-  //     const y = event.clientY - rect.top;
-  //     this.points.push({ x, y });
-  //     this.drawPoints(context);
-  //   });
-  // }
-  // ngOnInit(): void {
-  //   const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
-  //   const context = canvasEl.getContext('2d');
-  
-  //   canvasEl.width = window.innerWidth;
-  //   canvasEl.height = window.innerHeight;
-  
-  //   window.addEventListener('resize', () => {
-  //     canvasEl.width = window.innerWidth;
-  //     canvasEl.height = window.innerHeight;
-  //     this.drawPoints(context);
-  //   });
-  
-  //   canvasEl.addEventListener('click', (event: MouseEvent) => {
-  //     const rect = canvasEl.getBoundingClientRect();
-  //     const x = event.clientX - rect.left;
-  //     const y = event.clientY - rect.top;
-  //     this.points.push({ x, y });
-  //     this.drawPoints(context);
-  //   });
-  // }
-  
+
   ngOnInit(): void {
     const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
-    const context = canvasEl.getContext('2d');
+    const kontekst = canvasEl.getContext('2d');
     canvasEl.width = window.innerWidth;
     canvasEl.height = window.innerHeight;
-    canvasEl.addEventListener('click', (event: MouseEvent) => {
-      const rect = canvasEl.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-      this.points.push({ x, y });
-      if (context) {
-        this.drawPoints(context);
+    canvasEl.addEventListener('click', (dogadjaj: MouseEvent) => {
+      const pravougaonik = canvasEl.getBoundingClientRect();
+      const x = dogadjaj.clientX - pravougaonik.left;
+      const y = dogadjaj.clientY - pravougaonik.top;
+      this.tacke.push({ x, y });
+      if (kontekst) {
+        this.crtajTacke(kontekst);
       }
     });
   }
   
 
-  runJarvisMarch(): void {
+  pokreniJarvisMarch(): void {
     const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
-    const context = canvasEl.getContext('2d');
-    const hull = this.jarvisMarch(this.points);
-    this.drawHull(context, hull);
+    const kontekst = canvasEl.getContext('2d');
+    const omotac = this.jarvisMarch(this.tacke);
+    this.crtajOmotac(kontekst, omotac);
     console.log("gotovo")
   }
-  jarvisMarch(points: { x: number; y: number }[]): { x: number; y: number }[] {
-    // Find the point with the lowest y-coordinate (and then lowest x-coordinate)
-    let lowestIndex = 0;
-    for (let i = 1; i < points.length; i++) {
-      if (points[i].y < points[lowestIndex].y || (points[i].y === points[lowestIndex].y && points[i].x < points[lowestIndex].x)) {
-        lowestIndex = i;
+  jarvisMarch(tacke: { x: number; y: number }[]): { x: number; y: number }[] {
+    let najniziIndeks = 0;
+    for (let i = 1; i < tacke.length; i++) {
+      if (tacke[i].y < tacke[najniziIndeks].y || (tacke[i].y === tacke[najniziIndeks].y && tacke[i].x < tacke[najniziIndeks].x)) {
+        najniziIndeks = i;
       }
     }
   
-    const hull: { x: number; y: number }[] = [points[lowestIndex]];
+    const omotac: { x: number; y: number }[] = [tacke[najniziIndeks]];
   
-    let currentPoint = lowestIndex;
-    let endpoint: number;
+    let trenutnaTacka = najniziIndeks;
+    let krajnjaTacka: number;
     do {
-      endpoint = 0;
-      for (let i = 1; i < points.length; i++) {
-        if (currentPoint === endpoint || this.isCounterClockwise(points[currentPoint], points[i], points[endpoint])) {
-          endpoint = i;
+      krajnjaTacka = 0;
+      for (let i = 1; i < tacke.length; i++) {
+        if (trenutnaTacka === krajnjaTacka || this.jeSuprotnoOdSata(tacke[trenutnaTacka], tacke[i], tacke[krajnjaTacka])) {
+          krajnjaTacka = i;
         }
       }
-      hull.push(points[endpoint]);
-      currentPoint = endpoint;
-    } while (currentPoint !== lowestIndex);
+      omotac.push(tacke[krajnjaTacka]);
+      trenutnaTacka = krajnjaTacka;
+    } while (trenutnaTacka !== najniziIndeks);
   
-    return hull;
+    return omotac;
   }
-  isCounterClockwise(p1: { x: number; y: number }, p2: { x: number; y: number }, p3: { x: number; y: number }): boolean {
-    const crossProduct = (p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x);
-    return crossProduct > 0;
-  }
-  // drawHull(context: CanvasRenderingContext2D, hull: { x: number; y: number }[]): void {
-  //   context.beginPath();
-  //   context.moveTo(hull[0].x, hull[0].y);
-  //   for (let i = 1; i < hull.length; i++) {
-  //     context.lineTo(hull[i].x, hull[i].y);
-  //   }
-  //   context.closePath();
-  //   context.strokeStyle = '#FF0000';
-  //   context.stroke();
-  // }
-  drawHull(context: CanvasRenderingContext2D | null, hull: { x: number; y: number }[]): void {
-    if (!context) {
-      return;
-    }
-  
-    context.beginPath();
-    context.moveTo(hull[0].x, hull[0].y);
-  
-    for (let i = 1; i < hull.length; i++) {
-      context.lineTo(hull[i].x, hull[i].y);
-    }
-  
-    context.closePath();
-    context.stroke();
-  }
-    
-  drawPoints(context: CanvasRenderingContext2D): void {
-    const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
-    context.clearRect(0, 0, canvasEl.width, canvasEl.height);
-    context.lineWidth = 1;
-  
-    this.points.forEach((point) => {
-      context.beginPath();
-      context.arc(point.x, point.y, 2, 0, 2 * Math.PI);
-      context.fill();
-      context.stroke();
-    });
-  }
-  
-  // drawPoints(context: CanvasRenderingContext2D | null): void {
-  //   if (context) {
-  //     const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
-  //     context.clearRect(0, 0, canvasEl.width, canvasEl.height);      this.points.forEach((point) => {
-  //       context.beginPath();
-  //       context.arc(point.x, point.y, 5, 0, 2 * Math.PI);
-  //       context.fill();
-  //     });
-  //   }
-  // }
+  jeSuprotnoOdSata(p1: { x: number; y: number }, p2: { x: number; y: number }, p3: { x: number; y: number }): boolean {
+    const vektorskiProizvod = (p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x);
+    return vektorskiProizvod > 0;
+}
 
-  // generatePoints(): void {
-  //   this.points = [];
-  //   for (let i = 0; i < 1000; i++) {
-  //     const x = Math.random() * 400;
-  //     const y = Math.random() * 400;
-  //     this.points.push({ x, y });
-  //   }
-  //   const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
-  //   const context = canvasEl.getContext('2d');
-  //   this.drawPoints(context);
-  // }
-  // generatePoints(): void {
-  //   const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
-  //   const width = canvasEl.width;
-  //   const height = canvasEl.height;
-  //   const numPoints = 10000;
-  
-  //   this.points = [];
-  
-  //   for (let i = 0; i < numPoints; i++) {
-  //     const x = Math.floor(Math.random() * width);
-  //     const y = Math.floor(Math.random() * height);
-  //     this.points.push({ x, y });
-  //   }
-  
-  //   const context = canvasEl.getContext('2d');
-  //   this.drawPoints(context);
-  // }
-  generatePoints(): void {
+crtajOmotac(kontekst: CanvasRenderingContext2D | null, omotac: { x: number; y: number }[]): void {
+    if (!kontekst) {
+        return;
+    }
+
+    kontekst.beginPath();
+    kontekst.moveTo(omotac[0].x, omotac[0].y);
+
+    for (let i = 1; i < omotac.length; i++) {
+        kontekst.lineTo(omotac[i].x, omotac[i].y);
+    }
+
+    kontekst.closePath();
+    kontekst.stroke();
+}
+
+crtajTacke(kontekst: CanvasRenderingContext2D): void {
     const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
-    const context = canvasEl.getContext('2d');
-    const numPoints = 100000;
-    this.points = [];
-    for (let i = 0; i < numPoints; i++) {
-      const x = Math.floor(Math.random() * canvasEl.width);
-      const y = Math.floor(Math.random() * canvasEl.height);
-      this.points.push({ x, y });
+    kontekst.clearRect(0, 0, canvasEl.width, canvasEl.height);
+    kontekst.lineWidth = 1;
+
+    this.tacke.forEach((tacka) => {
+        kontekst.beginPath();
+        kontekst.arc(tacka.x, tacka.y, 2, 0, 2 * Math.PI);
+        kontekst.fill();
+        kontekst.stroke();
+    });
+}
+
+generisiTacke(): void {
+    const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
+    const kontekst = canvasEl.getContext('2d');
+    const brojTacka = 100000;
+    this.tacke = [];
+    for (let i = 0; i < brojTacka; i++) {
+        const x = Math.floor(Math.random() * canvasEl.width);
+        const y = Math.floor(Math.random() * canvasEl.height);
+        this.tacke.push({ x, y });
     }
-    if (context) {
-      this.drawPoints(context);
+    if (kontekst) {
+        this.crtajTacke(kontekst);
     }
-  }
-   
-  
+}
+
 }
