@@ -1,3 +1,4 @@
+
 import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 
 
@@ -8,55 +9,55 @@ import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 })
 export class TwoLinesIntersectionsComponent {
   @ViewChild('canvas') canvasRef!: ElementRef;
-  context!: CanvasRenderingContext2D;
-  points: [number, number][] = [];
+  kontekst!: CanvasRenderingContext2D;
+  tacke: [number, number][] = [];
 
   ngAfterViewInit(): void {
-    this.context = this.canvasRef.nativeElement.getContext('2d');
+    this.kontekst = this.canvasRef.nativeElement.getContext('2d');
   }
 
-  handleClick(event: MouseEvent): void {
-    const rect = this.canvasRef.nativeElement.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    this.points.push([x, y]);
-    this.drawPoint(x, y);
+  handleClick(dogadjaj: MouseEvent): void {
+    const pravougaonik = this.canvasRef.nativeElement.getBoundingClientRect();
+    const x = dogadjaj.clientX - pravougaonik.left;
+    const y = dogadjaj.clientY - pravougaonik.top;
+    this.tacke.push([x, y]);
+    this.nacrtajTacku(x, y);
 
-    if (this.points.length === 4) {
-      this.drawLine(this.points[0], this.points[1]);
-      this.drawLine(this.points[2], this.points[3]);
+    if (this.tacke.length === 4) {
+      this.nacrtajLiniju(this.tacke[0], this.tacke[1]);
+      this.nacrtajLiniju(this.tacke[2], this.tacke[3]);
 
-      if (this.linesIntersect(this.points[0], this.points[1], this.points[2], this.points[3])) {
-        console.log('Lines intersect');
+      if (this.linijePresjecaju(this.tacke[0], this.tacke[1], this.tacke[2], this.tacke[3])) {
+        alert('Linije se presjecaju');
       } else {
-        console.log('Lines do not intersect');
+        alert('Linije se ne presjecaju');
       }
 
-      this.points = [];
+      this.tacke = [];
     }
   }
 
-  drawPoint(x: number, y: number): void {
-    this.context.beginPath();
-    this.context.arc(x, y, 3, 0, 2 * Math.PI);
-    this.context.fillStyle = 'black';
-    this.context.fill();
+  nacrtajTacku(x: number, y: number): void {
+    this.kontekst.beginPath();
+    this.kontekst.arc(x, y, 3, 0, 2 * Math.PI);
+    this.kontekst.fillStyle = 'crna';
+    this.kontekst.fill();
   }
 
-  drawLine(start: [number, number], end: [number, number]): void {
-    this.context.beginPath();
-    this.context.moveTo(start[0], start[1]);
-    this.context.lineTo(end[0], end[1]);
-    this.context.stroke();
+  nacrtajLiniju(pocetak: [number, number], kraj: [number, number]): void {
+    this.kontekst.beginPath();
+    this.kontekst.moveTo(pocetak[0], pocetak[1]);
+    this.kontekst.lineTo(kraj[0], kraj[1]);
+    this.kontekst.stroke();
   }
 
-  linesIntersect(a1: [number, number], a2: [number, number], b1: [number, number], b2: [number, number]): boolean {
+  linijePresjecaju(a1: [number, number], a2: [number, number], b1: [number, number], b2: [number, number]): boolean {
     const d = (a2[1] - a1[1]) * (b2[0] - b1[0]) - (a2[0] - a1[0]) * (b2[1] - b1[1]);
-    if (d === 0) return false; // parallel lines
-
+    if (d === 0) return false; // paralelne linije
+  
     const ua = ((a2[0] - a1[0]) * (b1[1] - a1[1]) - (a2[1] - a1[1]) * (b1[0] - a1[0])) / d;
     const ub = ((b2[0] - b1[0]) * (b1[1] - a1[1]) - (b2[1] - b1[1]) * (b1[0] - a1[0])) / d;
-
+  
     return ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1;
   }
-}
+}  
