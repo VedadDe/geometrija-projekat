@@ -14,6 +14,7 @@ import { SimplePolygonComponent } from './components/simple-polygon/simple-polyg
 import { FormsModule } from '@angular/forms';
 import { ConvexCheckComponent } from './components/convex-check/convex-check.component';
 import { SegmentPolygonComponent } from './components/segment-polygon/segment-polygon.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { SegmentPolygonComponent } from './components/segment-polygon/segment-po
     MultipleSegmentsComponent,
     SimplePolygonComponent,
     ConvexCheckComponent,
-    SegmentPolygonComponent
+    SegmentPolygonComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
