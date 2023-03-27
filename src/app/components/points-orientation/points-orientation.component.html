@@ -1,10 +1,10 @@
 <h1>Check Orientation of Three Points</h1>
 
-<canvas #canvas (click)="canvasClick($event)"></canvas>
+<canvas #canvas (click)="klikNacanvas($event)"></canvas>
 
-<div class="modal" *ngIf="showModal">
+<div class="modal" *ngIf="prikaziModal">
   <div class="modal-content">
-    <h2>The points are {{ isClockwise ? 'clockwise' : 'counter-clockwise' }}.</h2>
-    <button (click)="closeModal()">OK</button>
+    <h2>Tačke {{ jeU_smeruKazaljke ? 'su u smjeru kazaljke' : 'nisu u smjeru kazaljke' }} na satu.</h2>
+    <button (click)="zatvoriModal()">OK</button>
   </div>
 </div>

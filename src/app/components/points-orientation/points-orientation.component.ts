@@ -1,10 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
-interface Point {
+interface Tacka {
   x: number;
   y: number;
 }
-
 @Component({
   selector: 'app-points-orientation',
   templateUrl: './points-orientation.component.html',
@@ -15,76 +14,70 @@ export class PointsOrientationComponent {
   @ViewChild('canvas', { static: true })
   canvasRef!: ElementRef<HTMLCanvasElement>;
 
-  showModal = false;
-  isClockwise = false;
-  points: Point[] = [];
+  prikaziModal = false;
+  jeU_smeruKazaljke = false;
+  tacke: Tacka[] = [];
 
   ngOnInit(): void {
     const canvas = this.canvasRef.nativeElement;
-    const context = canvas.getContext('2d');
+    const kontekst = canvas.getContext('2d');
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    if (context) {
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      context.beginPath();
-      context.moveTo(0, 0);
-      // context.lineTo(canvas.width, 0);
-      // context.lineTo(canvas.width, canvas.height);
-      // context.lineTo(0, canvas.height);
-      context.closePath();
-      context.stroke();
+    if (kontekst) {
+      kontekst.clearRect(0, 0, canvas.width, canvas.height);
+      kontekst.beginPath();
+      kontekst.moveTo(0, 0);
+      kontekst.closePath();
+      kontekst.stroke();
     }
   }
 
-  canvasClick(event: MouseEvent): void {
+  klikNacanvas(event: MouseEvent): void {
     const canvas = this.canvasRef.nativeElement;
-    const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    const pravougaonik = canvas.getBoundingClientRect();
+    const x = event.clientX - pravougaonik.left;
+    const y = event.clientY - pravougaonik.top;
 
-    this.points.push({ x, y });
+    this.tacke.push({ x, y });
 
-    const context = canvas.getContext('2d');
-    if (context) {
-      context.beginPath();
-      context.arc(x, y, 5, 0, 2 * Math.PI);
-      context.fill();
+    const kontekst = canvas.getContext('2d');
+    if (kontekst) {
+      kontekst.beginPath();
+      kontekst.arc(x, y, 5, 0, 2 * Math.PI);
+      kontekst.fill();
 
-      if (this.points.length === 3) {
-        this.showModal = true;
-        this.isClockwise = this.isPointsClockwise(this.points);
+      if (this.tacke.length === 3) {
+        this.prikaziModal = true;
+        this.jeU_smeruKazaljke = this.daLiSuTackeUSmeruKazaljke(this.tacke);
       }
     }
   }
 
-  isPointsClockwise(points: Point[]): boolean {
-    const p1 = points[0];
-    const p2 = points[1];
-    const p3 = points[2];
+  daLiSuTackeUSmeruKazaljke(tacke: Tacka[]): boolean {
+    const t1 = tacke[0];
+    const t2 = tacke[1];
+    const t3 = tacke[2];
 
-    const val = (p2.y - p1.y) * (p3.x - p2.x) - (p2.x - p1.x) * (p3.y - p2.y);
+    const val = (t2.y - t1.y) * (t3.x - t2.x) - (t2.x - t1.x) * (t3.y - t2.y);
 
     return val < 0;
   }
 
-  closeModal(): void {
-    this.showModal = false;
-    this.isClockwise = false;
-    this.points = [];
+  zatvoriModal(): void {
+    this.prikaziModal = false;
+    this.jeU_smeruKazaljke = false;
+    this.tacke = [];
 
     const canvas = this.canvasRef.nativeElement;
-    const context = canvas.getContext('2d');
-    if (context) {
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      context.beginPath();
-      context.moveTo(0, 0);
-      // context.lineTo(canvas.width, 0);
-      // context.lineTo(canvas.width, canvas.height);
-      // context.lineTo(0, canvas.height);
-      context.closePath();
-      context.stroke();
+    const kontekst = canvas.getContext('2d');
+    if (kontekst) {
+      kontekst.clearRect(0, 0, canvas.width, canvas.height);
+      kontekst.beginPath();
+      kontekst.moveTo(0, 0);
+      kontekst.closePath();
+      kontekst.stroke();
     }
   }
 }
