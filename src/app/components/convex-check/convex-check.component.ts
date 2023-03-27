@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 
-interface Point {
+interface Tacka {
   x: number;
   y: number;
 }
@@ -11,52 +11,52 @@ interface Point {
   styleUrls: ['./convex-check.component.scss']
 })
 export class ConvexCheckComponent {
-  @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvas') referencaPlatna!: ElementRef<HTMLCanvasElement>;
   private ctx!: CanvasRenderingContext2D;
-  private points: Point[] = [];
-  isConvex: boolean | undefined = undefined;
+  private tacke: Tacka[] = [];
+  jeKonveksan: boolean | undefined = undefined;
 
   ngAfterViewInit(): void {
-    this.ctx = this.canvasRef.nativeElement.getContext('2d')!;
+    this.ctx = this.referencaPlatna.nativeElement.getContext('2d')!;
   }
 
-  onCanvasClick(event: MouseEvent): void {
-    if (this.points.length >= 4) return;
+  naKlikPlatna(event: MouseEvent): void {
+    if (this.tacke.length >= 4) return;
 
-    const rect = this.canvasRef.nativeElement.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    const point: Point = { x, y };
+    const pravougaonik = this.referencaPlatna.nativeElement.getBoundingClientRect();
+    const x = event.clientX - pravougaonik.left;
+    const y = event.clientY - pravougaonik.top;
+    const tacka: Tacka = { x, y };
 
-    this.points.push(point);
-    this.drawPoint(point);
+    this.tacke.push(tacka);
+    this.nacrtajTacku(tacka);
 
-    if (this.points.length === 4) {
-      this.isConvex = this.checkConvexity(this.points);
-      this.drawQuadrilateral(this.points);
+    if (this.tacke.length === 4) {
+      this.jeKonveksan = this.provjeraKonveksnosti(this.tacke);
+      this.nacrtajCetvorougaonik(this.tacke);
     }
   }
 
-  clearCanvas(): void {
-    this.ctx.clearRect(0, 0, this.canvasRef.nativeElement.width, this.canvasRef.nativeElement.height);
-    this.points = [];
-    this.isConvex = undefined;
+  ocisticanvas(): void {
+    this.ctx.clearRect(0, 0, this.referencaPlatna.nativeElement.width, this.referencaPlatna.nativeElement.height);
+    this.tacke = [];
+    this.jeKonveksan = undefined;
   }
 
-  private drawPoint(point: Point): void {
+  private nacrtajTacku(tacka: Tacka): void {
     this.ctx.beginPath();
-    this.ctx.arc(point.x, point.y, 5, 0, 2 * Math.PI);
+    this.ctx.arc(tacka.x, tacka.y, 5, 0, 2 * Math.PI);
     this.ctx.fillStyle = 'blue';
     this.ctx.fill();
     this.ctx.closePath();
   }
 
-  private drawQuadrilateral(points: Point[]): void {
+  private nacrtajCetvorougaonik(tacke: Tacka[]): void {
     this.ctx.beginPath();
-    this.ctx.moveTo(points[0].x, points[0].y);
+    this.ctx.moveTo(tacke[0].x, tacke[0].y);
 
-    for (let i = 1; i < points.length; i++) {
-      this.ctx.lineTo(points[i].x, points[i].y);
+    for (let i = 1; i < tacke.length; i++) {
+      this.ctx.lineTo(tacke[i].x, tacke[i].y);
     }
 
     this.ctx.closePath();
@@ -64,26 +64,27 @@ export class ConvexCheckComponent {
     this.ctx.lineWidth = 2;
     this.ctx.stroke();
   }
-private checkConvexity(points: Point[]): boolean {
-  let angleSum = 0;
 
-  for (let i = 0; i < points.length; i++) {
-    const p1 = points[i];
-    const p2 = points[(i + 1) % points.length];
-    const p3 = points[(i + 2) % points.length];
+  private provjeraKonveksnosti(tacke: Tacka[]): boolean {
+    let sumaUglova = 0;
 
-    const vec1 = { x: p2.x - p1.x, y: p2.y - p1.y };
-    const vec2 = { x: p3.x - p2.x, y: p3.y - p2.y };
+    for (let i = 0; i < tacke.length; i++) {
+      const t1 = tacke[i];
+      const t2 = tacke[(i + 1) % tacke.length];
+      const t3 = tacke[(i + 2) % tacke.length];
 
-    const dotProduct = vec1.x * vec2.x + vec1.y * vec2.y;
-    const mag1 = Math.sqrt(vec1.x * vec1.x + vec1.y * vec1.y);
-    const mag2 = Math.sqrt(vec2.x * vec2.x + vec2.y * vec2.y);
+      const vektor1 = { x: t2.x - t1.x, y: t2.y - t1.y };
+      const vektor2 = { x: t3.x - t2.x, y: t3.y - t2.y };
 
-    const angle = Math.acos(dotProduct / (mag1 * mag2));
-    angleSum += angle;
+      const skalarskiProizvod = vektor1.x * vektor2.x + vektor1.y * vektor2.y;
+      const magnituda1 = Math.sqrt(vektor1.x * vektor1.x + vektor1.y * vektor1.y);
+      const magnituda2 = Math.sqrt(vektor2.x * vektor2.x + vektor2.y * vektor2.y);
+
+      const ugao = Math.acos(skalarskiProizvod / (magnituda1 * magnituda2));
+      sumaUglova += ugao;
+    }
+
+    return Math.abs(sumaUglova - 2 * Math.PI) < 1e-6;
   }
 
-  return Math.abs(angleSum - 2 * Math.PI) < 1e-6;
-}
-  
 }

@@ -1,9 +1,9 @@
 <div>
-    <canvas #canvas (click)="onCanvasClick($event)" width="400" height="400"></canvas>
-    <button (click)="clearCanvas()">Clear</button>
+    <canvas #canvas (click)="naKlikPlatna($event)" width="400" height="400"></canvas>
+    <button (click)="ocisticanvas()">Očisti</button>
   </div>
   
-  <p *ngIf="isConvex !== null">
-    Quadrilateral is {{ isConvex ? 'convex' : 'non-convex' }}
+  <p *ngIf="jeKonveksan !== null">
+    Četverougao {{ jeKonveksan ? 'je konveksan' : 'nije konveksan' }}
   </p>
       

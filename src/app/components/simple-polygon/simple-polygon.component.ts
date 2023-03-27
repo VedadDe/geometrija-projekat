@@ -200,5 +200,23 @@ doPolylineSegmentsIntersect(lineStart: { x: number; y: number }, lineEnd: { x: n
 
   return false;
 }
+getPolygonOrientation() {
+  const n = this.points.length;
+  let area = 0;
+
+  for (let i = 0; i < n; i++) {
+    const j = (i + 1) % n;
+    area += (this.points[i].x * this.points[j].y) - (this.points[j].x * this.points[i].y);
+  }
+
+  if (area < 0) {
+    alert ("Clockwise");
+  } else if (area > 0) {
+    alert ('Counterclockwise');
+  } else {
+    alert( 'Undefined');
+  }
+}
+
   
 }

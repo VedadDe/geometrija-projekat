@@ -2,6 +2,7 @@
     <button (click)="segmentOrPoint()">{{segment == true ? "segment" : "tačka"}}</button>
     <input [(ngModel)]="n" type="number" min="3" placeholder="Enter the number of points (n)" />
     <button (click)="generatePolygon()">Create Polygon</button>
+    <button (click)="getPolygonOrientation()">Check Polygon Orientation</button>
     <canvas #polygonCanvas (click)="onCanvasClick($event)"></canvas>
 </div>
   
