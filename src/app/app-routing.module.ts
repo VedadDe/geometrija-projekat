@@ -20,10 +20,10 @@ const routes: Routes = [
 { path: 'simple-polygon', component: SimplePolygonComponent},//5//6//point inside polygon
 { path: 'convex-check', component: ConvexCheckComponent},//6
 { path: 'set-triangle', component: SetPointsTriangleComponent},//6
+{ path: 'multiple-segments', component: MultipleSegmentsComponent},
 ///////////////////////////////////////////////////////////////////////////////////////////////
 { path: 'convex-quadrilateral', component: CheckIfQuadrilateralIsConvexComponent},
 { path: 'point-in-polygon', component: PointInPolygonComponent},
-{ path: 'multiple-segments', component: MultipleSegmentsComponent},
 { path: 'segment-polygon', component: SegmentPolygonComponent},
 ];
 

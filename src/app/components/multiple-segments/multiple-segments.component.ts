@@ -1,5 +1,17 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { RBTree } from 'bintrees'
+import { Component, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
+
+interface LineSegment {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+}
+interface Event {
+  type: 'start' | 'end';
+  x: number;
+  y: number;
+  index: number;
+}
 
 
 
@@ -8,188 +20,177 @@ import { RBTree } from 'bintrees'
   templateUrl: './multiple-segments.component.html',
   styleUrls: ['./multiple-segments.component.scss']
 })
-export class MultipleSegmentsComponent {
-  @ViewChild('canvas') canvasRef!: ElementRef;
-  points: [number, number][] = [];
-  segments: [[number, number], [number, number]][] = [];
-  resultMessage: string = '';
+export class MultipleSegmentsComponent implements AfterViewInit {
+ 
+  
 
-  onCanvasClick(event: MouseEvent): void {
-    const canvas = this.canvasRef.nativeElement;
-    const ctx = canvas.getContext('2d');
-    const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+  @ViewChild('lineCanvas') lineCanvas!: ElementRef<HTMLCanvasElement>;
+  private ctx!: CanvasRenderingContext2D;
 
-    this.points.push([x, y]);
+  private readonly numLineSegments = 100000;
 
-    ctx.beginPath();
-    ctx.arc(x, y, 3, 0, 2 * Math.PI);
-    ctx.fill();
-
-    if (this.points.length % 2 === 0) {
-      const startPoint = this.points[this.points.length - 2];
-      const endPoint = this.points[this.points.length - 1];
-      this.segments.push([startPoint, endPoint]);
-
-      ctx.beginPath();
-      ctx.moveTo(startPoint[0], startPoint[1]);
-      ctx.lineTo(endPoint[0], endPoint[1]);
-      ctx.stroke();
+  ngAfterViewInit(): void {
+    const context = this.lineCanvas.nativeElement.getContext('2d');
+    if (!context) {
+      console.error('Failed to get 2D rendering context');
+      return;
     }
+  
+    this.ctx = context;
+    this.lineCanvas.nativeElement.width = window.innerWidth;
+    this.lineCanvas.nativeElement.height = window.innerHeight;
+    this.generateAndCheckLineSegments();
   }
+  
+  
 
-  checkIntersecting(): void {
-    const intersecting = this.bentleyOttmann(this.segments);
-
-    if (intersecting) {
-      this.resultMessage = 'There are intersecting segments.';
-    } else {
-      this.resultMessage = 'There are no intersecting segments.';
+  generateAndCheckLineSegments(): void {
+    const lineSegments: LineSegment[] = [];
+  
+    for (let i = 0; i < this.numLineSegments; i++) {
+      const lineSegment = this.randomLineSegment();
+      lineSegments.push(lineSegment);
+      this.drawLineSegment(lineSegment);
     }
+  
+    const intersections = this.sweepLineIntersections(lineSegments);
+    intersections.forEach(([i, j]) => {
+      console.log(`Line segments ${i} and ${j} intersect.`);
+    });
   }
-
-  bentleyOttmann(segments: [[number, number], [number, number]][]): boolean {
-    if (segments.length < 2) {
-      return false;
-    }
-
-    const eventQueue = new EventQueue(segments);
-    const sweepLineStatus = new SweepLineStatus();
-
-    while (!eventQueue.isEmpty()) {
-      const eventPoint = eventQueue.pop();
-      sweepLineStatus.setSweepX(eventPoint.point[0]);
-    
-
-      if (eventPoint.type === 'start') {
-        const segment = eventPoint.segment;
-        const above = sweepLineStatus.above(segment);
-        const below = sweepLineStatus.below(segment);
-
-        if ((above && this.intersect(above, segment)) || (below && this.intersect(below, segment))) {
-          return true;
+  
+  // sweepLineIntersections(segments: LineSegment[]): [number, number][] {
+  //   const events: Event[] = [];
+  //   segments.forEach((segment, index) => {
+  //     events.push({ type: 'start', x: segment.x1, y: segment.y1, index });
+  //     events.push({ type: 'end', x: segment.x2, y: segment.y2, index });
+  //   });
+  
+  //   events.sort((a, b) => a.x - b.x || a.y - b.y);
+  
+  //   const active = new Set<number>();
+  //   const intersections: [number, number][] = [];
+  
+  //   for (const event of events) {
+  //     const segment = segments[event.index];
+  
+  //     if (event.type === 'start') {
+  //       for (const activeIndex of active) {
+  //         if (this.lineSegmentsIntersect(segment, segments[activeIndex])) {
+  //           intersections.push([event.index, activeIndex]);
+  //         }
+  //       }
+  
+  //       active.add(event.index);
+  //     } else {
+  //       active.delete(event.index);
+  //     }
+  //   }
+  
+  //   return intersections;
+  // }
+  
+  sweepLineIntersections(segments: LineSegment[]): [number, number][] {
+    const events: Event[] = [];
+    segments.forEach((segment, index) => {
+      events.push({ type: 'start', x: segment.x1, y: segment.y1, index });
+      events.push({ type: 'end', x: segment.x2, y: segment.y2, index });
+    });
+  
+    events.sort((a, b) => a.x - b.x || a.y - b.y);
+  
+    const active: number[] = [];
+    const intersections: [number, number][] = [];
+  
+    for (const event of events) {
+      const segment = segments[event.index];
+  
+      if (event.type === 'start') {
+        const position = this.binarySearch(active, (i) => this.compareSegments(segments[i], segment));
+  
+        for (let i = position - 1; i >= 0; i--) {
+          if (this.lineSegmentsIntersect(segment, segments[active[i]])) {
+            intersections.push([event.index, active[i]]);
+          } else {
+            break;
+          }
         }
-
-        sweepLineStatus.insert(segment);
-      } else { // eventPoint.type === 'end'
-        const segment = eventPoint.segment;
-        const above = sweepLineStatus.above(segment);
-        const below = sweepLineStatus.below(segment);
-
-        if (above && below && this.intersect(above, below)) {
-          return true;
+  
+        for (let i = position; i < active.length; i++) {
+          if (this.lineSegmentsIntersect(segment, segments[active[i]])) {
+            intersections.push([event.index, active[i]]);
+          } else {
+            break;
+          }
         }
-
-        sweepLineStatus.delete(segment);
+  
+        active.splice(position, 0, event.index);
+      } else {
+        const position = active.indexOf(event.index);
+        active.splice(position, 1);
       }
     }
-
-    return false;
+  
+    return intersections;
   }
-
-  intersect(segment1: [number, number][], segment2: [number, number][]): boolean {
-    const [p1, p2] = segment1;
-    const [p3, p4] = segment2;
-
-    const d1 = this.direction(p1, p2, p3);
-    const d2 = this.direction(p1, p2, p4);
-    const d3 = this.direction(p3, p4, p1);
-    const d4 = this.direction(p3, p4, p2);
-
-    if (((d1 > 0 && d2 < 0) || (d1 < 0 && d2 > 0)) && ((d3 > 0 && d4 < 0) || (d3 < 0 && d4 > 0))) {
-      return true;
+  
+  binarySearch<T>(array: T[], compare: (item: T) => number): number {
+    let left = 0;
+    let right = array.length;
+  
+    while (left < right) {
+      const mid = (left + right) >>> 1;
+      const cmp = compare(array[mid]);
+  
+      if (cmp < 0) {
+        left = mid + 1;
+      } else {
+        right = mid;
+      }
     }
-
-    return false;
+  
+    return left;
   }
-
-  direction(p1: [number, number], p2: [number, number], p3: [number, number]): number {
-    return (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0]);
-  }
-}
-
-class EventQueue {
-  private queue: any[];
-
-  constructor(segments: [[number, number], [number, number]][]) {
-    this.queue = [];
-
-    for (const segment of segments) {
-      const [p1, p2] = segment;
-      const startPoint = { type: 'start', point: p1[0] < p2[0] ? p1 : p2, segment: segment };
-      const endPoint = { type: 'end', point: p1[0] < p2[0] ? p2 : p1, segment: segment };
-
-      this.queue.push(startPoint, endPoint);
+  
+  compareSegments(a: LineSegment, b: LineSegment): number {
+    const aY = Math.min(a.y1, a.y2);
+    const bY = Math.min(b.y1, b.y2);
+  
+    if (aY === bY) {
+      const aX = Math.min(a.x1, a.x2);
+      const bX = Math.min(b.x1, b.x2);
+      return aX - bX;
     }
-
-    this.queue.sort((a, b) => a.point[0] - b.point[0] || a.point[1] - b.point[1]);
+  
+    return aY - bY;
   }
+  
 
-  pop() {
-    return this.queue.shift();
+  randomLineSegment(): LineSegment {
+    return {
+      x1: Math.random() * window.innerWidth,
+      y1: Math.random() * window.innerHeight,
+      x2: Math.random() * window.innerWidth,
+      y2: Math.random() * window.innerHeight,
+    };
   }
-
-  isEmpty() {
-    return this.queue.length === 0;
+  drawLineSegment(lineSegment: LineSegment): void {
+    this.ctx.beginPath();
+    this.ctx.moveTo(lineSegment.x1, lineSegment.y1);
+    this.ctx.lineTo(lineSegment.x2, lineSegment.y2);
+    this.ctx.strokeStyle = 'black';
+    this.ctx.lineWidth = 2;
+    this.ctx.stroke();
   }
-}
+  
 
-class SweepLineStatus {
-  private tree: any;
-  private sweepX: number;
+  lineSegmentsIntersect(a: LineSegment, b: LineSegment): boolean {
+    const det = (a.x1 - a.x2) * (b.y1 - b.y2) - (a.y1 - a.y2) * (b.x1 - b.x2);
+    if (det === 0) return false; // parallel lines
 
-  constructor() {
-    this.tree = new RBTree<[number, number][]>((a, b) => this.compareSegments(a, b, this.sweepX));
-    this.sweepX = 0;
-  }
+    const t = ((a.x1 - b.x1) * (b.y1 - b.y2) - (a.y1 - b.y1) * (b.x1 - b.x2)) / det;
+    const u = -((a.x1 - a.x2) * (a.y1 - b.y1) - (a.y1 - a.y2) * (a.x1 - b.x1)) / det;
 
-  setSweepX(x: number) {
-    this.sweepX = x;
-  }
-
-  insert(segment: [number, number][]) {
-    this.tree.insert(segment);
-  }
-
-  delete(segment: [number, number][]) {
-    this.tree.remove(segment);
-  }
-
-  above(segment: [number, number][]) {
-    const node = this.tree.find(segment);
-    if (node && node.next) {
-      return node.next.key;
-    }
-    return null;
-  }
-
-  below(segment: [number, number][]) {
-    const node = this.tree.find(segment);
-    if (node && node.prev) {
-      return node.prev.key;
-    }
-    return null;
-  }
-
-  compareSegments(segment1: [number, number][], segment2: [number, number][], sweepX: number): number {
-    const y1 = this.interpolateY(segment1, sweepX);
-    const y2 = this.interpolateY(segment2, sweepX);
-
-    if (y1 < y2) {
-      return -1;
-    }
-    if (y1 > y2) {
-      return 1;
-    }
-    return 0;
-  }
-
-  interpolateY(segment: [number, number][], x: number): number {
-    const [p1, p2] = segment;
-    if (p1[0] === p2[0]) {
-      return p1[1];
-    }
-    return p1[1] + (p2[1] - p1[1]) * (x - p1[0]) / (p2[0] - p1[0]);
+    return t >= 0 && t <= 1 && u >= 0 && u <= 1;
   }
 }
