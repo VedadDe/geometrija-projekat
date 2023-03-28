@@ -1,102 +1,122 @@
-import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { Component, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
+import RBush from 'rbush';
+
+interface LineSegment {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+}
+interface Event {
+  type: 'start' | 'end';
+  x: number;
+  y: number;
+  index: number;
+}
+
 
 @Component({
   selector: 'app-segment-polygon',
   templateUrl: './segment-polygon.component.html',
   styleUrls: ['./segment-polygon.component.scss']
 })
-export class SegmentPolygonComponent {
+export class SegmentPolygonComponent implements AfterViewInit{
 
-  @ViewChild('canvas', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
+  
+
+  @ViewChild('lineCanvas') lineCanvas!: ElementRef<HTMLCanvasElement>;
   private ctx!: CanvasRenderingContext2D;
-  private trianglePoints: [number, number][] = [];
-  private randomPoints: [number, number][] = [];
 
-  constructor() {}
+  private readonly numLineSegments = 10000;
 
-  ngOnInit(): void {
-    const context = this.canvas.nativeElement.getContext('2d');
+  ngAfterViewInit(): void {
+    const context = this.lineCanvas.nativeElement.getContext('2d');
     if (!context) {
-      console.error('Failed to get 2D context');
+      console.error('Failed to get 2D rendering context');
       return;
     }
+  
     this.ctx = context;
-    this.canvas.nativeElement.addEventListener('click', (event: MouseEvent) => {
-      this.handleCanvasClick(event);
+    this.lineCanvas.nativeElement.width = window.innerWidth;
+    this.lineCanvas.nativeElement.height = window.innerHeight;
+    this.generateAndCheckLineSegments();
+  }
+  
+  
+
+  generateAndCheckLineSegments(): void {
+    const lineSegments: LineSegment[] = [];
+  
+    for (let i = 0; i < this.numLineSegments; i++) {
+      const lineSegment = this.randomLineSegment();
+      lineSegments.push(lineSegment);
+      this.drawLineSegment(lineSegment);
+    }
+  
+    const intersections = this.sweepLineIntersections(lineSegments);
+    intersections.forEach(([i, j]) => {
+      console.log(`Line segments ${i} and ${j} intersect.`);
     });
   }
-
-  handleCanvasClick(event: MouseEvent): void {
-    if (this.trianglePoints.length < 3) {
-      const rect = this.canvas.nativeElement.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-      this.trianglePoints.push([x, y]);
-      this.drawPoint(x, y);
-      if (this.trianglePoints.length === 3) {
-        this.drawTriangle();
-      }
-    }
-  }
-  generateRandomPoints(): void {
-    if (this.trianglePoints.length !== 3) {
-      alert('Please create a triangle by clicking on the canvas first.');
-      return;
-    }
-    
-    this.randomPoints = [];
-    for (let i = 0; i < 100000; i++) {
-      const x = Math.floor(Math.random() * this.canvas.nativeElement.width);
-      const y = Math.floor(Math.random() * this.canvas.nativeElement.height);
-      this.randomPoints.push([x, y]);
   
-      if (this.isPointInsideTriangle(x, y)) {
-        this.drawPoint(x, y, 'red');
+  sweepLineIntersections(segments: LineSegment[]): [number, number][] {
+    const events: Event[] = [];
+    segments.forEach((segment, index) => {
+      events.push({ type: 'start', x: segment.x1, y: segment.y1, index });
+      events.push({ type: 'end', x: segment.x2, y: segment.y2, index });
+    });
+  
+    events.sort((a, b) => a.x - b.x || a.y - b.y);
+  
+    const active = new Set<number>();
+    const intersections: [number, number][] = [];
+  
+    for (const event of events) {
+      const segment = segments[event.index];
+  
+      if (event.type === 'start') {
+        for (const activeIndex of active) {
+          if (this.lineSegmentsIntersect(segment, segments[activeIndex])) {
+            intersections.push([event.index, activeIndex]);
+          }
+        }
+  
+        active.add(event.index);
       } else {
-        this.drawPoint(x, y, 'blue');
+        active.delete(event.index);
       }
     }
+  
+    return intersections;
   }
   
+  
 
-
-  isPointInsideTriangle(x: number, y: number): boolean {
-    const [A, B, C] = this.trianglePoints.map(point => point as [number, number]);
-    const P: [number, number] = [x, y];
-
-    const areaABC = this.triangleArea(A, B, C);
-    const areaABP = this.triangleArea(A, B, P);
-    const areaBCP = this.triangleArea(B, C, P);
-    const areaCAP = this.triangleArea(C, A, P);
-
-    return areaABC === areaABP + areaBCP + areaCAP;
+  randomLineSegment(): LineSegment {
+    return {
+      x1: Math.random() * window.innerWidth,
+      y1: Math.random() * window.innerHeight,
+      x2: Math.random() * window.innerWidth,
+      y2: Math.random() * window.innerHeight,
+    };
   }
-
-  triangleArea([x1, y1]: [number, number], [x2, y2]: [number, number], [x3, y3]: [number, number]): number {
-    return Math.abs((x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2);
-  }
-
-  drawPoint(x: number, y: number, color: string = 'blue'): void {
-    this.ctx.fillStyle = color;
+  drawLineSegment(lineSegment: LineSegment): void {
     this.ctx.beginPath();
-    this.ctx.arc(x, y, 2, 0, 2 * Math.PI);
-    this.ctx.fill();
-  }
-
-  drawTriangle(): void {
-    this.ctx.beginPath();
-    this.ctx.moveTo(this.trianglePoints[0][0], this.trianglePoints[0][1]);
-    this.ctx.lineTo(this.trianglePoints[1][0], this.trianglePoints[1][1]);
-    this.ctx.lineTo(this.trianglePoints[2][0], this.trianglePoints[2][1]);
-    this.ctx.closePath();
-    this.ctx.strokeStyle = 'green';
+    this.ctx.moveTo(lineSegment.x1, lineSegment.y1);
+    this.ctx.lineTo(lineSegment.x2, lineSegment.y2);
+    this.ctx.strokeStyle = 'black';
     this.ctx.lineWidth = 2;
     this.ctx.stroke();
   }
+  
 
-  clearCanvas(): void {
-    this.trianglePoints = [];
-    this.randomPoints = [];
-    this.ctx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+  lineSegmentsIntersect(a: LineSegment, b: LineSegment): boolean {
+    const det = (a.x1 - a.x2) * (b.y1 - b.y2) - (a.y1 - a.y2) * (b.x1 - b.x2);
+    if (det === 0) return false; // parallel lines
+
+    const t = ((a.x1 - b.x1) * (b.y1 - b.y2) - (a.y1 - b.y1) * (b.x1 - b.x2)) / det;
+    const u = -((a.x1 - a.x2) * (a.y1 - b.y1) - (a.y1 - a.y2) * (a.x1 - b.x1)) / det;
+
+    return t >= 0 && t <= 1 && u >= 0 && u <= 1;
   }
 }
