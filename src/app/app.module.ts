@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { ConvexCheckComponent } from './components/convex-check/convex-check.component';
 import { SegmentPolygonComponent } from './components/segment-polygon/segment-polygon.component';
 import { HeaderComponent } from './header/header.component';
+import { SetPointsTriangleComponent } from './components/set-points-triangle/set-points-triangle.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { HeaderComponent } from './header/header.component';
     SimplePolygonComponent,
     ConvexCheckComponent,
     SegmentPolygonComponent,
-    HeaderComponent
+    HeaderComponent,
+    SetPointsTriangleComponent
   ],
   imports: [
     BrowserModule,

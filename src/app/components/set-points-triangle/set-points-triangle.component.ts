@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 
 @Component({
-  selector: 'app-segment-polygon',
-  templateUrl: './segment-polygon.component.html',
-  styleUrls: ['./segment-polygon.component.scss']
+  selector: 'app-set-points-triangle',
+  templateUrl: './set-points-triangle.component.html',
+  styleUrls: ['./set-points-triangle.component.scss']
 })
-export class SegmentPolygonComponent {
-
+export class SetPointsTriangleComponent {
   @ViewChild('canvas', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
   private ctx!: CanvasRenderingContext2D;
   private trianglePoints: [number, number][] = [];

@@ -8,6 +8,7 @@ import { PointInPolygonComponent } from './components/point-in-polygon/point-in-
 import { PointInsideTriangleComponent } from './components/point-inside-triangle/point-inside-triangle.component';
 import { PointsOrientationComponent } from './components/points-orientation/points-orientation.component';
 import { SegmentPolygonComponent } from './components/segment-polygon/segment-polygon.component';
+import { SetPointsTriangleComponent } from './components/set-points-triangle/set-points-triangle.component';
 import { SimplePolygonComponent } from './components/simple-polygon/simple-polygon.component';
 import { TwoLinesIntersectionsComponent } from './components/two-lines-intersections/two-lines-intersections.component';
 
@@ -18,6 +19,7 @@ const routes: Routes = [
 { path: 'two-segments', component: TwoLinesIntersectionsComponent},//4
 { path: 'simple-polygon', component: SimplePolygonComponent},//5//6//point inside polygon
 { path: 'convex-check', component: ConvexCheckComponent},//6
+{ path: 'set-triangle', component: SetPointsTriangleComponent},//6
 ///////////////////////////////////////////////////////////////////////////////////////////////
 { path: 'convex-quadrilateral', component: CheckIfQuadrilateralIsConvexComponent},
 { path: 'point-in-polygon', component: PointInPolygonComponent},
