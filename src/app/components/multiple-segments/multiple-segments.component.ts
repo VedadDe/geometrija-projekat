@@ -1,4 +1,5 @@
 import { Component, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
+import { RBTree } from 'bintrees';
 
 interface LineSegment {
   x1: number;
@@ -39,15 +40,15 @@ export class MultipleSegmentsComponent implements AfterViewInit {
     this.ctx = context;
     this.lineCanvas.nativeElement.width = window.innerWidth;
     this.lineCanvas.nativeElement.height = window.innerHeight;
-    this.generateAndCheckLineSegments();
+    // this.generateAndCheckLineSegments();
   }
   
   
 
-  generateAndCheckLineSegments(): void {
+  generateAndCheckLineSegments(numLineSegments: number): void {
     const lineSegments: LineSegment[] = [];
   
-    for (let i = 0; i < this.numLineSegments; i++) {
+    for (let i = 0; i < numLineSegments; i++) {
       const lineSegment = this.randomLineSegment();
       lineSegments.push(lineSegment);
       this.drawLineSegment(lineSegment);
@@ -59,37 +60,7 @@ export class MultipleSegmentsComponent implements AfterViewInit {
     });
   }
   
-  // sweepLineIntersections(segments: LineSegment[]): [number, number][] {
-  //   const events: Event[] = [];
-  //   segments.forEach((segment, index) => {
-  //     events.push({ type: 'start', x: segment.x1, y: segment.y1, index });
-  //     events.push({ type: 'end', x: segment.x2, y: segment.y2, index });
-  //   });
-  
-  //   events.sort((a, b) => a.x - b.x || a.y - b.y);
-  
-  //   const active = new Set<number>();
-  //   const intersections: [number, number][] = [];
-  
-  //   for (const event of events) {
-  //     const segment = segments[event.index];
-  
-  //     if (event.type === 'start') {
-  //       for (const activeIndex of active) {
-  //         if (this.lineSegmentsIntersect(segment, segments[activeIndex])) {
-  //           intersections.push([event.index, activeIndex]);
-  //         }
-  //       }
-  
-  //       active.add(event.index);
-  //     } else {
-  //       active.delete(event.index);
-  //     }
-  //   }
-  
-  //   return intersections;
-  // }
-  
+ 
   sweepLineIntersections(segments: LineSegment[]): [number, number][] {
     const events: Event[] = [];
     segments.forEach((segment, index) => {
@@ -99,40 +70,79 @@ export class MultipleSegmentsComponent implements AfterViewInit {
   
     events.sort((a, b) => a.x - b.x || a.y - b.y);
   
-    const active: number[] = [];
+    const active = new RBTree((a: number, b: number) => this.compareSegments(segments[a], segments[b]));
     const intersections: [number, number][] = [];
   
     for (const event of events) {
       const segment = segments[event.index];
   
       if (event.type === 'start') {
-        const position = this.binarySearch(active, (i) => this.compareSegments(segments[i], segment));
+        const node = active.insert(event.index);
+        const pred = this.findPredecessor(active, event.index);
+        const succ = this.findSuccessor(active, event.index);
   
-        for (let i = position - 1; i >= 0; i--) {
-          if (this.lineSegmentsIntersect(segment, segments[active[i]])) {
-            intersections.push([event.index, active[i]]);
-          } else {
-            break;
-          }
+        if (pred && this.lineSegmentsIntersect(segment, segments[pred])) {
+          intersections.push([event.index, pred]);
         }
   
-        for (let i = position; i < active.length; i++) {
-          if (this.lineSegmentsIntersect(segment, segments[active[i]])) {
-            intersections.push([event.index, active[i]]);
-          } else {
-            break;
-          }
+        if (succ && this.lineSegmentsIntersect(segment, segments[succ])) {
+          intersections.push([event.index, succ]);
         }
-  
-        active.splice(position, 0, event.index);
       } else {
-        const position = active.indexOf(event.index);
-        active.splice(position, 1);
+        const pred = this.findPredecessor(active, event.index);
+        const succ = this.findSuccessor(active, event.index);
+  
+        if (pred && succ && this.lineSegmentsIntersect(segments[pred], segments[succ])) {
+          intersections.push([pred, succ]);
+        }
+  
+        active.remove(event.index);
       }
     }
   
     return intersections;
   }
+  
+  findPredecessor(tree: RBTree<number>, index: number): number | null {
+    let predecessor: number | null = null;
+    tree.each((data: number) => {
+      if (data < index) {
+        predecessor = data;
+      } else {
+        return false; // Stop the iteration
+      }
+      return true; // Continue the iteration
+    });
+    return predecessor;
+  }
+  
+  findSuccessor(tree: RBTree<number>, index: number): number | null {
+    let successor: number | null = null;
+    tree.each((data: number) => {
+      if (data > index) {
+        successor = data;
+        return false; // Stop the iteration
+      }
+      return true; // Continue the iteration
+    });
+    return successor;
+  }
+  
+  
+  
+  generateThreeLineSegments(): void {
+    this.clearCanvas();
+    this.generateAndCheckLineSegments(3);
+  }
+  
+  generateOneMillionLineSegments(): void {
+    this.clearCanvas();
+    this.generateAndCheckLineSegments(100000);
+  }
+  clearCanvas(): void {
+    this.ctx.clearRect(0, 0, this.lineCanvas.nativeElement.width, this.lineCanvas.nativeElement.height);
+  }
+  
   
   binarySearch<T>(array: T[], compare: (item: T) => number): number {
     let left = 0;
