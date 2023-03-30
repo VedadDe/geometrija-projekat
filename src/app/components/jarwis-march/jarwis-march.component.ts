@@ -26,12 +26,31 @@ export class JarwisMarchComponent {
       }
     });
   }
+  vektorskiProizvod(o: { x: number; y: number }, a: { x: number; y: number }, b: { x: number; y: number }): number {
+    return (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
+  }
+
+  porediPolarniUgao(tacka0: { x: number; y: number }, a: { x: number; y: number }, b: { x: number; y: number }): number {
+    const vp = this.vektorskiProizvod(tacka0, a, b);
+    if (vp === 0) {
+      return Math.sqrt(Math.pow(a.x - tacka0.x, 2) + Math.pow(a.y - tacka0.y, 2)) - Math.sqrt(Math.pow(b.x - tacka0.x, 2) + Math.pow(b.y - tacka0.y, 2));
+    }
+    return Math.atan2(a.y - tacka0.y, a.x - tacka0.x) - Math.atan2(b.y - tacka0.y, b.x - tacka0.x);
+  }
   
+
 
   pokreniJarvisMarch(): void {
     const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
     const kontekst = canvasEl.getContext('2d');
     const omotac = this.jarvisMarch(this.tacke);
+    this.crtajOmotac(kontekst, omotac);
+    console.log("gotovo")
+  }
+  pokreniGrahamScan(): void {
+    const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
+    const kontekst = canvasEl.getContext('2d');
+    const omotac = this.grahamovAlgoritam(this.tacke);
     this.crtajOmotac(kontekst, omotac);
     console.log("gotovo")
   }
@@ -60,6 +79,29 @@ export class JarwisMarchComponent {
   
     return omotac;
   }
+  grahamovAlgoritam(tacke: { x: number; y: number }[]): { x: number; y: number }[] {
+    let najniziIndeks = 0;
+    for (let i = 1; i < tacke.length; i++) {
+      if (tacke[i].y < tacke[najniziIndeks].y || (tacke[i].y === tacke[najniziIndeks].y && tacke[i].x < tacke[najniziIndeks].x)) {
+        najniziIndeks = i;
+      }
+    }
+
+    [tacke[0], tacke[najniziIndeks]] = [tacke[najniziIndeks], tacke[0]];
+
+    tacke.sort((a, b) => this.porediPolarniUgao(tacke[0], a, b));
+
+    const omotac = [tacke[0], tacke[1]];
+    for (let i = 2; i < tacke.length; i++) {
+      while (omotac.length >= 2 && this.vektorskiProizvod(omotac[omotac.length - 2], omotac[omotac.length - 1], tacke[i]) <= 0) {
+        omotac.pop();
+      }
+      omotac.push(tacke[i]);
+    }
+
+    return omotac;
+  }
+  
   jeSuprotnoOdSata(p1: { x: number; y: number }, p2: { x: number; y: number }, p3: { x: number; y: number }): boolean {
     const vektorskiProizvod = (p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x);
     return vektorskiProizvod > 0;
@@ -69,7 +111,7 @@ crtajOmotac(kontekst: CanvasRenderingContext2D | null, omotac: { x: number; y: n
     if (!kontekst) {
         return;
     }
-
+    kontekst.strokeStyle = 'red';
     kontekst.beginPath();
     kontekst.moveTo(omotac[0].x, omotac[0].y);
 
