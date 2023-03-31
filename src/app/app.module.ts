@@ -6,16 +6,15 @@ import { AppComponent } from './app.component';
 import { JarwisMarchComponent } from './components/jarwis-march/jarwis-march.component';
 import { PointInsideTriangleComponent } from './components/point-inside-triangle/point-inside-triangle.component';
 import { PointsOrientationComponent } from './components/points-orientation/points-orientation.component';
-import { CheckIfQuadrilateralIsConvexComponent } from './components/check-if-quadrilateral-is-convex/check-if-quadrilateral-is-convex.component';
-import { PointInPolygonComponent } from './components/point-in-polygon/point-in-polygon.component';
 import { TwoLinesIntersectionsComponent } from './components/two-lines-intersections/two-lines-intersections.component';
 import { MultipleSegmentsComponent } from './components/multiple-segments/multiple-segments.component';
 import { SimplePolygonComponent } from './components/simple-polygon/simple-polygon.component';
 import { FormsModule } from '@angular/forms';
 import { ConvexCheckComponent } from './components/convex-check/convex-check.component';
-import { SegmentPolygonComponent } from './components/segment-polygon/segment-polygon.component';
 import { HeaderComponent } from './header/header.component';
 import { SetPointsTriangleComponent } from './components/set-points-triangle/set-points-triangle.component';
+import { ConvexCheckDokumentacijaComponent } from './dokumentacija/convex-check-dokumentacija/convex-check-dokumentacija.component';
+import { TwoLinesIntersectionsDokumentacijaComponent } from './dokumentacija/two-lines-intersections-dokumentacija/two-lines-intersections-dokumentacija.component';
 
 @NgModule({
   declarations: [
@@ -23,15 +22,14 @@ import { SetPointsTriangleComponent } from './components/set-points-triangle/set
     JarwisMarchComponent,
     PointInsideTriangleComponent,
     PointsOrientationComponent,
-    CheckIfQuadrilateralIsConvexComponent,
-    PointInPolygonComponent,
     TwoLinesIntersectionsComponent,
     MultipleSegmentsComponent,
     SimplePolygonComponent,
     ConvexCheckComponent,
-    SegmentPolygonComponent,
     HeaderComponent,
-    SetPointsTriangleComponent
+    SetPointsTriangleComponent,
+    ConvexCheckDokumentacijaComponent,
+    TwoLinesIntersectionsDokumentacijaComponent
   ],
   imports: [
     BrowserModule,

@@ -14,8 +14,6 @@ interface Event {
   index: number;
 }
 
-
-
 @Component({
   selector: 'app-multiple-segments',
   templateUrl: './multiple-segments.component.html',

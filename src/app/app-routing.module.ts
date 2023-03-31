@@ -1,16 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CheckIfQuadrilateralIsConvexComponent } from './components/check-if-quadrilateral-is-convex/check-if-quadrilateral-is-convex.component';
 import { ConvexCheckComponent } from './components/convex-check/convex-check.component';
 import { JarwisMarchComponent } from './components/jarwis-march/jarwis-march.component';
 import { MultipleSegmentsComponent } from './components/multiple-segments/multiple-segments.component';
-import { PointInPolygonComponent } from './components/point-in-polygon/point-in-polygon.component';
 import { PointInsideTriangleComponent } from './components/point-inside-triangle/point-inside-triangle.component';
 import { PointsOrientationComponent } from './components/points-orientation/points-orientation.component';
-import { SegmentPolygonComponent } from './components/segment-polygon/segment-polygon.component';
 import { SetPointsTriangleComponent } from './components/set-points-triangle/set-points-triangle.component';
 import { SimplePolygonComponent } from './components/simple-polygon/simple-polygon.component';
 import { TwoLinesIntersectionsComponent } from './components/two-lines-intersections/two-lines-intersections.component';
+import { ConvexCheckDokumentacijaComponent } from './dokumentacija/convex-check-dokumentacija/convex-check-dokumentacija.component';
 
 const routes: Routes = [  
 { path: 'jarwis-march', component: JarwisMarchComponent },//1
@@ -22,9 +20,7 @@ const routes: Routes = [
 { path: 'set-triangle', component: SetPointsTriangleComponent},//6
 { path: 'multiple-segments', component: MultipleSegmentsComponent},
 ///////////////////////////////////////////////////////////////////////////////////////////////
-{ path: 'convex-quadrilateral', component: CheckIfQuadrilateralIsConvexComponent},
-{ path: 'point-in-polygon', component: PointInPolygonComponent},
-{ path: 'segment-polygon', component: SegmentPolygonComponent},
+{ path: 'convex-check-dokumentacija', component: ConvexCheckDokumentacijaComponent},
 ];
 
 @NgModule({
