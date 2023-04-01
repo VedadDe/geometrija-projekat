@@ -13,10 +13,11 @@ import { JarvisMarchDokumentacijaComponent } from './dokumentacija/jarvis-march-
 import { PointInsideTriangleDokumentacijaComponent } from './dokumentacija/point-inside-triangle-dokumentacija/point-inside-triangle-dokumentacija.component';
 import { PointsDocumentatrionDokumentacijaComponent } from './dokumentacija/points-documentatrion-dokumentacija/points-documentatrion-dokumentacija.component';
 import { SetPointsTriangleDokumentacijaComponent } from './dokumentacija/set-points-triangle-dokumentacija/set-points-triangle-dokumentacija.component';
+import { SimplePolygonDokumentacijaComponent } from './dokumentacija/simple-polygon-dokumentacija/simple-polygon-dokumentacija.component';
 import { TwoLinesIntersectionsDokumentacijaComponent } from './dokumentacija/two-lines-intersections-dokumentacija/two-lines-intersections-dokumentacija.component';
 
 const routes: Routes = [  
-{ path: 'jarwis-march', component: JarwisMarchComponent },//!
+{ path: 'jarwis-march', component: JarwisMarchComponent },//
 { path: 'point-triangle', component: PointInsideTriangleComponent},//
 { path: 'points-orientation', component: PointsOrientationComponent},//
 { path: 'two-segments', component: TwoLinesIntersectionsComponent},//
@@ -31,6 +32,7 @@ const routes: Routes = [
 { path: 'points-orientation-dokumentacija', component: PointsDocumentatrionDokumentacijaComponent},
 { path: 'point-triangle-dokumentacija', component: PointInsideTriangleDokumentacijaComponent},
 { path: 'jarwis-march-dokumentacija', component: JarvisMarchDokumentacijaComponent},
+{ path: 'simple-polygon-dokumentacija', component: SimplePolygonDokumentacijaComponent},
 ];
 
 @NgModule({

@@ -1,0 +1,79 @@
+<h1>Komponenta jednostavnog poligona</h1>
+<p>Ova komponenta predstavlja jednostavan poligon sa nekoliko funkcija za manipulaciju i testiranje poligona.</p>
+<h2>Varijable</h2>
+<ul>
+  <li><code>tacke</code>: Niz tačaka koji predstavlja poligon</li>
+  <li><code>n</code>: Broj tačaka koji treba generisati za poligon</li>
+  <li><code>pocetakSegmenta</code>: Početna tačka za crtanje segmenta</li>
+  <li><code>krajSegmenta</code>: Krajnja tačka za crtanje segmenta</li>
+  <li><code>segment</code>: Boolean vrijednost koja predstavlja da li se crta segment ili se testira tačka</li>
+</ul>
+
+<h2>Strukture</h2>
+<ul>
+  <li><code>  x: number; y: number  </code>: Struktura koja predstavlja tačku u 2D prostoru sa koordinatama <code>x</code> i <code>y</code>.</li>
+  <li><code>  a:   x: number; y: number  , b:   x: number; y: number    </code>: Struktura koja predstavlja liniju sa dvije tačke <code>a</code> i <code>b</code> u 2D prostoru.</li>
+</ul>
+
+<h2>Metode</h2>
+<ul>
+  <li><code>ngAfterViewInit(): void</code>: Metoda koja se poziva nakon što se view inicijalizuje. Inicijalizira se kontekst za crtanje na platnu i postavlja se veličina platna. Metoda također dodaje slušač događaja za promjenu veličine prozora.</li>
+  <li><code>private resizeCanvas(): void</code>: Metoda koja postavlja veličinu platna u odnosu na veličinu prozora.</li>
+  <li><code>generisiPoligon(): void</code>: Metoda koja generiše i crta poligon na platnu. Poligon se sastoji od <code>n</code> slučajno generisanih tačaka koje se sortiraju po polarnom uglu. Metoda također crta sve tačke unutar poligona.</li>
+  <li><code>segmentIlitacka(): void</code>: Metoda koja mijenja vrijednost varijable <code>segment</code> između <code>true</code> i <code>false</code>.</li>
+  <li><code>private generisiRandomtacke(n: number):   x: number; y: number  []</code>: Metoda koja generiše niz tačaka na slučajan način u granicama platna.</li>
+  <li><code>private sorttackePoPolarnomUglu(tacke:   x: number; y: number  []):   x: number; y: number  []</code>: Metoda koja sortira niz tačaka po polarnom uglu u odnosu na centroid poligona.</li>
+  <li><code>private izracunajCentroid(tacke:   x: number; y: number  []):   x: number; y: number  </code>: Metoda koja izračunava centroid poligona na osnovu niza tačaka.</li>
+  <li><code>private crtajtacka(x: number, y: number): void</code>: Metoda koja crta tačku na platnu na osnovu njenih koordinata.</li>
+  <li><code>jeLiTackaUPoligonu(tacka:   x: number; y: number  ): boolean</code>: Metoda koja testira da li se tačka nalazi unutar poligona pomoću brojanja presjeka sa test linijom.</li>
+  <li><code>daLiSeLinijeSijeku(a1:   x: number; y: number  , a2:   x: number; y: number  , b1:   x: number; y: number  , b2:   x: number; y: number  ): boolean</code>: Metoda koja testira da li se dvije linije sijeku pomoću determinante.</li>
+  <li><code>onCanvasClick(event: MouseEvent): void</code>: Metoda koja se poziva prilikom klika na platno. Ako je vrijednost varijable <code>segment</code> <code>true</code>, tada se crta segment i testira se da li se segment sijekao sa poligonom. Ako je vrijednost varijable <code>segment</code> <code>false</code>, tada se testira da li se kliknuta tačka nalazi unutar poligona.</li>
+  <li><code>crtajLineSegment(start:   x: number; y: number  , end:   x: number; y: number  ): void</code>: Metoda koja crta segment linije na platnu na osnovu početne i krajnje tačke.</li>
+  <li><code>ispitivanjePresjeka(pocetakSegmenta:   x: number; y: number  , krajSegmenta:   x: number; y: number  ): boolean</code>: Metoda koja testira da li se segment linije sijekao sa poligonom na osnovu svih linija koje čine poligon.</li>
+  <li><code>orjentacijaPoligona(): void</code>: Metoda koja testira orijentaciju poligona na osnovu prvog momenta površine.</li>
+  </ul>
+  
+  <h2>Ulazne i izlazne vrijednosti</h2>
+  <ul>
+    <li>Ulazne vrijednosti: Nema ulaznih vrijednosti za ovu komponentu.</li>
+    <li>Izlazne vrijednosti:
+      <ul>
+        <li><code>generisiPoligon(): void</code>: Nema izlaznih vrijednosti.</li>
+        <li><code>jeLiTackaUPoligon</code>: boolean</li>
+        <li><code>onCanvasClick(event: MouseEvent): void</code>: Nema izlaznih vrijednosti.</li>
+        <li><code>orjentacijaPoligona(): void</code>: Nema izlaznih vrijednosti.</li>
+        </ul>
+        </li>
+        </ul>
+        <h2>Glavna logika</h2>
+<p>Glavna logika ove komponente je implementirana u nekoliko metoda:</p>
+<ul>
+  <li><code>ngAfterViewInit(): void</code>: Metoda koja se poziva nakon što je komponenta inicijalizirana i platno je spremno za crtanje. Ova metoda dobavlja kontekst platna i postavlja njegovu veličinu na osnovu veličine prozora.</li>
+  <li><code>generisiPoligon(): void</code>: Metoda koja generira poligon sa <code>n</code> tačaka i sortira ih po polarnom uglu u odnosu na centroid poligona. Nakon toga se crta poligon i sve tačke poligona.</li>
+  <li><code>jeLiTackaUPoligonu(tacka:   x: number; y: number  ): boolean</code>: Metoda koja testira da li se tačka nalazi unutar poligona. Ova metoda koristi metodu <code>daLiSeLinijeSijeku()</code> za brojanje presjeka sa test linijom.</li>
+  <li><code>onCanvasClick(event: MouseEvent): void</code>: Metoda koja se poziva prilikom klika na platno. Ako je vrijednost varijable <code>segment</code> <code>true</code>, tada se crta segment i testira se da li se segment sijekao sa poligonom. Ako je vrijednost varijable <code>segment</code> <code>false</code>, tada se testira da li se kliknuta tačka nalazi unutar poligona.</li>
+  <li><code>orjentacijaPoligona(): void</code>: Metoda koja testira orijentaciju poligona na osnovu prvog momenta površine.</li>
+</ul>
+
+<h2>Varijable</h2>
+<ul>
+  <li><code>@ViewChild('polygonCanvas',   static: false  ) canvasRef!: ElementRef</code>: Referenca na platno na kojem se crta poligon.</li>
+  <li><code>private kontekst!: CanvasRenderingContext2D</code>: Kontekst platna.</li>
+  <li><code>private tacke:   x: number; y: number  [] = []</code>: Niz tačaka koje čine poligon.</li>
+  <li><code>n: number = 3</code>: Broj tačaka koje čine poligon. Inicijalno postavljeno na 3.</li>
+  <li><code>pocetakSegmenta:   x: number; y: number   | null = null</code>: Početna tačka segmenta linije koji se crta.</li>
+  <li><code>krajSegmenta:   x: number; y: number   | null = null</code>: Krajnja tačka segmenta linije koji se crta.</li>
+  <li><code>segment: boolean = false</code>: Boolean varijabla koja određuje da li se trenutno crta segment linije ili se testira tačka u poligonu. Inicijalno postavljeno na <code>false</code>.</li>
+  </ul>
+  
+  <h2>Strukture</h2>
+  <ul>
+    <li><code>  x: number; y: number  </code>: Struktura koja predstavlja tačku u 2D prostoru. Sadrži x i y koordinate tačke.</li>
+    <li><code>  a:   x: number; y: number  ; b:   x: number; y: number    </code>: Struktura koja predstavlja liniju u 2D prostoru. Sadrži početnu i krajnju tačku linije.</li>
+  </ul>
+  
+  <h2>Interfejsi</h2>
+  <p>Nema interfejsa u ovoj komponenti.</p>
+    
+
+  
