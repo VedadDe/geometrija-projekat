@@ -1,0 +1,62 @@
+<h1> Provjera da li je tačka unutar trokuta</h1>
+<p>
+  Ovaj kod je implementacija funkcionalnosti za provjeru da li se odabrana tačka nalazi unutar trokuta na canvasu.
+</p>
+<h2>Strukture i interfejsi</h2>
+<p>
+  Kod sadrži jedan interfejs i jednu klasu koje opisuju strukturu tačaka na koordinatnom sistemu:
+</p>
+<ul>
+  <li>
+    <code>interface Tacka</code> - opisuje strukturu tačaka sa x i y koordinatama.
+  </li>
+  <li>
+    <code>class Tacka</code> - implementira interfejs <code>Tacka</code> i definiše konstruktor za instanciranje tačaka sa x i y koordinatama.
+  </li>
+</ul>
+<h2>Funkcije</h2>
+<p>
+  Kod sadrži nekoliko funkcija koje obavljaju specifične zadatke:
+</p>
+<ul>
+  <li>
+    <code>dodajTacku(event: MouseEvent)</code> - funkcija koja se poziva prilikom klika na canvasu. Dodaje novu tačku u niz tačaka i crta je na canvasu. Ako je dodano tri tačke, poziva funkciju za crtanje trokuta.
+  </li>
+  <li>
+    <code>ngAfterViewInit()</code> - funkcija koja se poziva nakon što je view komponente prikazan. Inicijalizuje canvas i poziva funkciju za crtanje trokuta.
+  </li>
+  <li>
+    <code>canvasClick(event: MouseEvent)</code> - funkcija koja se poziva prilikom klika na canvasu nakon što su već tri tačke dodane. Dodaje novu tačku u niz tačaka, crta je na canvasu i poziva funkciju za provjeru da li se tačka nalazi unutar trokuta. Ako je tačka unutar trokuta, prikazuje se modal sa porukom da se tačka nalazi unutar trokuta.
+  </li>
+  <li>
+    <code>crtajTrokut()</code> - funkcija koja crta trokut na canvasu na osnovu tri tačke u nizu tačaka.
+  </li>
+  <li>
+    <code>racunajPovrsinuTrokuta(p1: Tacka, p2: Tacka, p3: Tacka)</code> - funkcija koja izračunava površinu trokuta na osnovu tri tačke koje ga definiraju.
+  </li>
+  <li>
+    <code>jeLiTackaUnutarTrokuta(p: Tacka)</code> - funkcija koja provjerava da li se tačka nalazi unutar trokuta.
+  </li>
+  <li>
+    <code>zatvoriModal()</code> - funkcija koja se poziva prilikom zatvaranja moda. Resetuje niz tačaka i briše crteže na canvasu.
+  </li>
+</ul>
+<h2>Varijable</h2>
+<p>
+  Kod sadrži nekoliko varijabli koje se koriste za praćenje stanja aplikacije:
+</p>
+<ul>
+  <li>
+    <code>tacke: Tacka[]</code> - niz tačaka koje definiraju trokut.
+  </li>
+  <li>
+    <code>prikaziModal: boolean</code> - varijabla koja određuje da li se prikazuje modal sa rezultatom provjere.
+  </li>
+  <li>
+    <code>unutar: boolean</code> - varijabla koja određuje da li se tačka nalazi unutar trokuta.
+  </li>
+</ul>
+<h2>Glavna logika</h2>
+<p>
+  Glavna logika aplikacije sastoji se od dodavanja tačaka na canvas, crtanja trokuta i provjere da li se tačka nalazi unutar trokuta. Korisnik dodaje tačke klikom na canvas. Kada su dodane tri tačke, crta se trokut i postavlja se osluškivač za četvrti klik. Kada se klikne četvrti put, poziva se funkcija za provjeru da li se tačka nalazi unutar trokuta. Ako se tačka nalazi unutar trokuta, prikazuje se modal sa porukom da se tačka nalazi unutar trokuta. Nakon zatvaranja moda, niz tačaka se resetuje i brišu se crteži na canvasu.
+</p>

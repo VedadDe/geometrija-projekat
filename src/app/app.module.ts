@@ -17,6 +17,7 @@ import { ConvexCheckDokumentacijaComponent } from './dokumentacija/convex-check-
 import { TwoLinesIntersectionsDokumentacijaComponent } from './dokumentacija/two-lines-intersections-dokumentacija/two-lines-intersections-dokumentacija.component';
 import { SetPointsTriangleDokumentacijaComponent } from './dokumentacija/set-points-triangle-dokumentacija/set-points-triangle-dokumentacija.component';
 import { PointsDocumentatrionDokumentacijaComponent } from './dokumentacija/points-documentatrion-dokumentacija/points-documentatrion-dokumentacija.component';
+import { PointInsideTriangleDokumentacijaComponent } from './dokumentacija/point-inside-triangle-dokumentacija/point-inside-triangle-dokumentacija.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { PointsDocumentatrionDokumentacijaComponent } from './dokumentacija/poin
     ConvexCheckDokumentacijaComponent,
     TwoLinesIntersectionsDokumentacijaComponent,
     SetPointsTriangleDokumentacijaComponent,
-    PointsDocumentatrionDokumentacijaComponent
+    PointsDocumentatrionDokumentacijaComponent,
+    PointInsideTriangleDokumentacijaComponent
   ],
   imports: [
     BrowserModule,
