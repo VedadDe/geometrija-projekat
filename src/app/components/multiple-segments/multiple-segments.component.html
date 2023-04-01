@@ -1,4 +1,8 @@
-<button (click)="generateThreeLineSegments()">Generate 3 Line Segments</button>
-<button (click)="generateOneMillionLineSegments()">Generate 100,000 Line Segments</button>
-
-<canvas #lineCanvas></canvas>
+<div>
+  <h2>Random Line Segments Intersection</h2>
+  <button (click)="generisiNasumicneSegmente(2)">Generiši dva nasumična segmenta</button>
+  <button (click)="generisiNasumicneSegmente(20)">Generiši 20 nasumičnih segmenta</button>
+  <button (click)="generisiNasumicneSegmente(200000)">Generiši 200,000 nasumična segmenta</button>
+  <canvas #canvas width="1400" height="600" style="border: 1px solid;"></canvas>
+  <p *ngIf="prijesekPronaden">Presjek pronađen!</p>
+</div>

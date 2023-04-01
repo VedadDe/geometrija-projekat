@@ -1,204 +1,207 @@
-import { Component, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
-import { RBTree } from 'bintrees';
+import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 
-interface LineSegment {
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
-}
-interface Event {
-  type: 'start' | 'end';
+
+
+interface Tacka {
   x: number;
   y: number;
-  index: number;
+  jeLijevo: boolean;
+  linija?: LinijskiSegment | null;
 }
+
+
+interface LinijskiSegment {
+  pocetak: Tacka;
+  kraj: Tacka;
+}
+
 
 @Component({
   selector: 'app-multiple-segments',
   templateUrl: './multiple-segments.component.html',
   styleUrls: ['./multiple-segments.component.scss']
 })
-export class MultipleSegmentsComponent implements AfterViewInit {
+export class MultipleSegmentsComponent implements OnInit {
  
-  
+  constructor() {}
 
-  @ViewChild('lineCanvas') lineCanvas!: ElementRef<HTMLCanvasElement>;
-  private ctx!: CanvasRenderingContext2D;
+  ngOnInit(): void {}
+  @ViewChild('canvas') canvas!: ElementRef<HTMLCanvasElement>;
+private ctx!: CanvasRenderingContext2D;
+public prijesekPronaden = false;
+public canvasWidth = 800;
+public canvasHeight = 600;
 
-  private readonly numLineSegments = 100000;
+private static readonly EPSILON = 1e-9;
 
-  ngAfterViewInit(): void {
-    const context = this.lineCanvas.nativeElement.getContext('2d');
-    if (!context) {
-      console.error('Failed to get 2D rendering context');
-      return;
-    }
-  
-    this.ctx = context;
-    this.lineCanvas.nativeElement.width = window.innerWidth;
-    this.lineCanvas.nativeElement.height = window.innerHeight;
-    // this.generateAndCheckLineSegments();
-  }
-  
-  
 
-  generateAndCheckLineSegments(numLineSegments: number): void {
-    const lineSegments: LineSegment[] = [];
-  
-    for (let i = 0; i < numLineSegments; i++) {
-      const lineSegment = this.randomLineSegment();
-      lineSegments.push(lineSegment);
-      this.drawLineSegment(lineSegment);
-    }
-  
-    const intersections = this.sweepLineIntersections(lineSegments);
-    intersections.forEach(([i, j]) => {
-      console.log(`Line segments ${i} and ${j} intersect.`);
-    });
+ngAfterViewInit(): void {
+  const context = this.canvas.nativeElement.getContext('2d');
+  if (context === null) {
+    throw new Error('greska prilikom dobavljanja 2D context');
   }
-  
- 
-  sweepLineIntersections(segments: LineSegment[]): [number, number][] {
-    const events: Event[] = [];
-    segments.forEach((segment, index) => {
-      events.push({ type: 'start', x: segment.x1, y: segment.y1, index });
-      events.push({ type: 'end', x: segment.x2, y: segment.y2, index });
-    });
-  
-    events.sort((a, b) => a.x - b.x || a.y - b.y);
-  
-    const active = new RBTree((a: number, b: number) => this.compareSegments(segments[a], segments[b]));
-    const intersections: [number, number][] = [];
-  
-    for (const event of events) {
-      const segment = segments[event.index];
-  
-      if (event.type === 'start') {
-        const node = active.insert(event.index);
-        const pred = this.findPredecessor(active, event.index);
-        const succ = this.findSuccessor(active, event.index);
-  
-        if (pred && this.lineSegmentsIntersect(segment, segments[pred])) {
-          intersections.push([event.index, pred]);
-        }
-  
-        if (succ && this.lineSegmentsIntersect(segment, segments[succ])) {
-          intersections.push([event.index, succ]);
-        }
-      } else {
-        const pred = this.findPredecessor(active, event.index);
-        const succ = this.findSuccessor(active, event.index);
-  
-        if (pred && succ && this.lineSegmentsIntersect(segments[pred], segments[succ])) {
-          intersections.push([pred, succ]);
-        }
-  
-        active.remove(event.index);
-      }
-    }
-  
-    return intersections;
-  }
-  
-  findPredecessor(tree: RBTree<number>, index: number): number | null {
-    let predecessor: number | null = null;
-    tree.each((data: number) => {
-      if (data < index) {
-        predecessor = data;
-      } else {
-        return false; // Stop the iteration
-      }
-      return true; // Continue the iteration
-    });
-    return predecessor;
-  }
-  
-  findSuccessor(tree: RBTree<number>, index: number): number | null {
-    let successor: number | null = null;
-    tree.each((data: number) => {
-      if (data > index) {
-        successor = data;
-        return false; // Stop the iteration
-      }
-      return true; // Continue the iteration
-    });
-    return successor;
-  }
-  
-  
-  
-  generateThreeLineSegments(): void {
-    this.clearCanvas();
-    this.generateAndCheckLineSegments(3);
-  }
-  
-  generateOneMillionLineSegments(): void {
-    this.clearCanvas();
-    this.generateAndCheckLineSegments(100000);
-  }
-  clearCanvas(): void {
-    this.ctx.clearRect(0, 0, this.lineCanvas.nativeElement.width, this.lineCanvas.nativeElement.height);
-  }
-  
-  
-  binarySearch<T>(array: T[], compare: (item: T) => number): number {
-    let left = 0;
-    let right = array.length;
-  
-    while (left < right) {
-      const mid = (left + right) >>> 1;
-      const cmp = compare(array[mid]);
-  
-      if (cmp < 0) {
-        left = mid + 1;
-      } else {
-        right = mid;
-      }
-    }
-  
-    return left;
-  }
-  
-  compareSegments(a: LineSegment, b: LineSegment): number {
-    const aY = Math.min(a.y1, a.y2);
-    const bY = Math.min(b.y1, b.y2);
-  
-    if (aY === bY) {
-      const aX = Math.min(a.x1, a.x2);
-      const bX = Math.min(b.x1, b.x2);
-      return aX - bX;
-    }
-  
-    return aY - bY;
-  }
-  
+  this.ctx = context;
+}
 
-  randomLineSegment(): LineSegment {
-    return {
-      x1: Math.random() * window.innerWidth,
-      y1: Math.random() * window.innerHeight,
-      x2: Math.random() * window.innerWidth,
-      y2: Math.random() * window.innerHeight,
+generisiNasumicneSegmente( broj: number): void {
+  const brojSegmenata = broj;
+  const segmenti: LinijskiSegment[] = [];
+  const tacke: Tacka[] = [];
+
+  for (let i = 0; i < brojSegmenata; i++) {
+    const pocetak: Tacka = {
+      x: Math.random() * this.canvasWidth,
+      y: Math.random() * this.canvasHeight,
+      jeLijevo: true,
     };
+
+    const kraj: Tacka = {
+      x: Math.random() * this.canvasWidth,
+      y: Math.random() * this.canvasHeight,
+      jeLijevo: false,
+    };
+
+    const segment: LinijskiSegment = { pocetak, kraj };
+    pocetak.linija = segment;
+    kraj.linija = segment;
+
+    segmenti.push(segment);
+    tacke.push(pocetak, kraj);
   }
-  drawLineSegment(lineSegment: LineSegment): void {
-    this.ctx.beginPath();
-    this.ctx.moveTo(lineSegment.x1, lineSegment.y1);
-    this.ctx.lineTo(lineSegment.x2, lineSegment.y2);
-    this.ctx.strokeStyle = 'black';
-    this.ctx.lineWidth = 2;
-    this.ctx.stroke();
+
+  this.prijesekPronaden = this.sweepLinePresjek(tacke);
+
+  this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+  segmenti.forEach((segment) => this.crtajLinijskiSegment(segment));
+}
+
+
+crtajLinijskiSegment(linija: LinijskiSegment): void {
+  this.ctx.beginPath();
+  this.ctx.moveTo(linija.pocetak.x, linija.pocetak.y);
+  this.ctx.lineTo(linija.kraj.x, linija.kraj.y);
+  this.ctx.stroke();
+}
+
+
+  sweepLinePresjek(tacke: Tacka[]): boolean {
+    tacke.sort((a, b) => a.x - b.x);
+  
+    const T: Set<LinijskiSegment> = new Set();
+  
+    for (let i = 0; i < tacke.length; i++) {
+      const point = tacke[i];
+  
+      if (point.jeLijevo) {
+        T.add(point.linija as LinijskiSegment);
+  
+        const pred = this.predecessor(T, point.linija as LinijskiSegment);
+        const succ = this.successor(T, point.linija as LinijskiSegment);
+  
+        if (pred && this.presjecajuSe(point.linija as LinijskiSegment, pred)) {
+          return true;
+        }
+  
+        if (succ && this.presjecajuSe(point.linija as LinijskiSegment, succ)) {
+          return true;
+        }
+      } else {
+        const pred = this.predecessor(T, point.linija as LinijskiSegment);
+        const succ = this.successor(T, point.linija as LinijskiSegment);
+  
+        if (pred && succ && this.presjecajuSe(pred, succ)) {
+          return true;
+        }
+  
+        T.delete(point.linija as LinijskiSegment);
+      }
+    }
+  
+    return false;
+  }
+  predecessor(set: Set<LinijskiSegment>, linija: LinijskiSegment): LinijskiSegment | null {
+    let rezultat: LinijskiSegment | null = null;
+    const sweepX = linija.pocetak.x;
+  
+    for (const clan of set) {
+      const clanY = this.getYAtX(sweepX, clan);
+      const linijaY = this.getYAtX(sweepX, linija);
+  
+      if (clanY < linijaY) {
+        if (!rezultat || this.getYAtX(sweepX, rezultat) < clanY) {
+          rezultat = clan;
+        }
+      }
+    }
+  
+    return rezultat;
   }
   
-
-  lineSegmentsIntersect(a: LineSegment, b: LineSegment): boolean {
-    const det = (a.x1 - a.x2) * (b.y1 - b.y2) - (a.y1 - a.y2) * (b.x1 - b.x2);
-    if (det === 0) return false; // parallel lines
-
-    const t = ((a.x1 - b.x1) * (b.y1 - b.y2) - (a.y1 - b.y1) * (b.x1 - b.x2)) / det;
-    const u = -((a.x1 - a.x2) * (a.y1 - b.y1) - (a.y1 - a.y2) * (a.x1 - b.x1)) / det;
-
-    return t >= 0 && t <= 1 && u >= 0 && u <= 1;
+  successor(set: Set<LinijskiSegment>, linija: LinijskiSegment): LinijskiSegment | null {
+    let rezultat: LinijskiSegment | null = null;
+    const sweepX = linija.pocetak.x;
+  
+    for (const clan of set) {
+      const clanY = this.getYAtX(sweepX, clan);
+      const linijaY = this.getYAtX(sweepX, linija);
+  
+      if (clanY > linijaY) {
+        if (!rezultat || this.getYAtX(sweepX, rezultat) > clanY) {
+          rezultat = clan;
+        }
+      }
+    }
+  
+    return rezultat;
   }
+  
+  getYAtX(x: number, linija: LinijskiSegment): number {
+    const { pocetak, kraj } = linija;
+    const slope = (kraj.y - pocetak.y) / (kraj.x - pocetak.x);
+    return pocetak.y + slope * (x - pocetak.x);
+  }
+  
+  orijentacija(p: Tacka, q: Tacka, r: Tacka): number {
+    const val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
+  
+    if (Math.abs(val) < MultipleSegmentsComponent.EPSILON) return 0; 
+    return val > 0 ? 1 : 2; // orijentacija u smjeru kazaljke ili obrnuto
+  }
+  segmentiPreklapanje(linija1: LinijskiSegment, linija2: LinijskiSegment): boolean {
+    if (this.orijentacija(linija1.pocetak, linija1.kraj, linija2.pocetak) === 0 && this.orijentacija(linija1.pocetak, linija1.kraj, linija2.kraj) === 0) {
+      return this.naSegmentu(linija1.pocetak, linija2.pocetak, linija1.kraj) || this.naSegmentu(linija1.pocetak, linija2.kraj, linija1.kraj) || this.naSegmentu(linija2.pocetak, linija1.pocetak, linija2.kraj) || this.naSegmentu(linija2.pocetak, linija1.kraj, linija2.kraj);
+    }
+    return false;
+  }
+  
+  naSegmentu(p: Tacka, q: Tacka, r: Tacka): boolean {
+    if (q.x <= Math.max(p.x, r.x) && q.x >= Math.min(p.x, r.x) && q.y <= Math.max(p.y, r.y) && q.y >= Math.min(p.y, r.y)) {
+      return true;
+    }
+    return false;
+  }
+  
+  presjecajuSe(linija1: LinijskiSegment, linija2: LinijskiSegment): boolean {
+    if (this.segmentiPreklapanje(linija1, linija2)) return true;
+
+    const p1 = linija1.pocetak;
+    const q1 = linija1.kraj;
+    const p2 = linija2.pocetak;
+    const q2 = linija2.kraj;
+  
+    const o1 = this.orijentacija(p1, q1, p2);
+    const o2 = this.orijentacija(p1, q1, q2);
+    const o3 = this.orijentacija(p2, q2, p1);
+    const o4 = this.orijentacija(p2, q2, q1);
+  
+    if (o1 !== o2 && o3 !== o4) return true;
+  
+    if (o1 === 0 && this.naSegmentu(p1, p2, q1)) return true;
+    if (o2 === 0 && this.naSegmentu(p1, q2, q1)) return true;
+    if (o3 === 0 && this.naSegmentu(p2, p1, q2)) return true;
+    if (o4 === 0 && this.naSegmentu(p2, q1, q2)) return true;
+  
+    return false; // Doesn't fall in any of the above cases
+  }
+  
 }
