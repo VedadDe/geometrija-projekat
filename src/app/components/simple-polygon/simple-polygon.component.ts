@@ -8,19 +8,19 @@ import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 export class SimplePolygonComponent implements AfterViewInit {
 
   @ViewChild('polygonCanvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
-  private context!: CanvasRenderingContext2D;
-  private points: { x: number; y: number }[] = [];
+  private kontekst!: CanvasRenderingContext2D;
+  private tacke: { x: number; y: number }[] = [];
   n: number = 3;
-  lineStart: { x: number; y: number } | null = null;
-  lineEnd: { x: number; y: number } | null = null;
+  pocetakSegmenta: { x: number; y: number } | null = null;
+  krajSegmenta: { x: number; y: number } | null = null;
   segment: boolean = false;
   
   ngAfterViewInit(): void {
-    const context = this.canvasRef.nativeElement.getContext('2d');
-    if (!context) {
-      throw new Error('Unable to get 2D rendering context for the canvas.');
+    const kontekst = this.canvasRef.nativeElement.getContext('2d');
+    if (!kontekst) {
+      throw new Error('Unable to get 2D rendering kontekst for the canvas.');
     }
-    this.context = context;
+    this.kontekst = kontekst;
     this.resizeCanvas();
     window.addEventListener('resize', () => this.resizeCanvas());
   }
@@ -30,108 +30,96 @@ export class SimplePolygonComponent implements AfterViewInit {
     this.canvasRef.nativeElement.height = window.innerHeight * 0.8;
   }
 
-  generatePolygon(): void {
+  generisiPoligon(): void {
     if (this.n >= 3) {
-      this.points = this.generateRandomPoints(this.n);
-      this.points = this.sortPointsByPolarAngle(this.points);
-      this.context.clearRect(0, 0, this.canvasRef.nativeElement.width, this.canvasRef.nativeElement.height);
+      this.tacke = this.generisiRandomtacke(this.n);
+      this.tacke = this.sorttackePoPolarnomUglu(this.tacke);
+      this.kontekst.clearRect(0, 0, this.canvasRef.nativeElement.width, this.canvasRef.nativeElement.height);
 
-      this.context.beginPath();
-      this.context.moveTo(this.points[0].x, this.points[0].y);
+      this.kontekst.beginPath();
+      this.kontekst.moveTo(this.tacke[0].x, this.tacke[0].y);
 
-      for (let i = 1; i < this.points.length; i++) {
-        this.context.lineTo(this.points[i].x, this.points[i].y);
+      for (let i = 1; i < this.tacke.length; i++) {
+        this.kontekst.lineTo(this.tacke[i].x, this.tacke[i].y);
       }
 
-      this.context.closePath();
-      this.context.stroke();
+      this.kontekst.closePath();
+      this.kontekst.stroke();
 
-      // Draw points
-      for (const point of this.points) {
-        this.drawPoint(point.x, point.y);
+      for (const tacka of this.tacke) {
+        this.crtajtacka(tacka.x, tacka.y);
       }
     }
   }
-  segmentOrPoint(){
+  segmentIlitacka(){
     this.segment = ! this.segment
   }
-  private generateRandomPoints(n: number): { x: number; y: number }[] {
-    const points: { x: number; y: number }[] = [];
+  private generisiRandomtacke(n: number): { x: number; y: number }[] {
+    const tacke: { x: number; y: number }[] = [];
     const width = this.canvasRef.nativeElement.width;
     const height = this.canvasRef.nativeElement.height;
 
     for (let i = 0; i < n; i++) {
-      points.push({
+      tacke.push({
         x: Math.random() * width,
         y: Math.random() * height,
       });
     }
 
-    return points;
+    return tacke;
   }
 
-  private sortPointsByPolarAngle(points: { x: number; y: number }[]): { x: number; y: number }[] {
-    const centroid = this.calculateCentroid(points);
+  private sorttackePoPolarnomUglu(tacke: { x: number; y: number }[]): { x: number; y: number }[] {
+    const centroid = this.izracunajCentroid(tacke);
 
-    points.sort((a, b) => {
-      const angleA = Math.atan2(a.y - centroid.y, a.x - centroid.x);
-      const angleB = Math.atan2(b.y - centroid.y, b.x - centroid.x);
-      return angleA - angleB;
+    tacke.sort((a, b) => {
+      const ugaoA = Math.atan2(a.y - centroid.y, a.x - centroid.x);
+      const ugaoB = Math.atan2(b.y - centroid.y, b.x - centroid.x);
+      return ugaoA - ugaoB;
     });
 
-    return points;
+    return tacke;
   }
 
-  private calculateCentroid(points: { x: number; y: number }[]): { x: number; y: number } {
+  private izracunajCentroid(tacke: { x: number; y: number }[]): { x: number; y: number } {
     const centroid = { x: 0, y: 0 };
 
-    for (const point of points) {
-      centroid.x += point.x;
-      centroid.y += point.y;
+    for (const tacka of tacke) {
+      centroid.x += tacka.x;
+      centroid.y += tacka.y;
     }
 
-    centroid.x /= points.length;
-    centroid.y /= points.length;
+    centroid.x /= tacke.length;
+    centroid.y /= tacke.length;
 
     return centroid;
   }
 
-  private drawPoint(x: number, y: number): void {
-    this.context.beginPath();
-    this.context.arc(x, y, 3, 0, 2 * Math.PI);
-    this.context.fillStyle = 'black';
-    this.context.fill();
+  private crtajtacka(x: number, y: number): void {
+    this.kontekst.beginPath();
+    this.kontekst.arc(x, y, 3, 0, 2 * Math.PI);
+    this.kontekst.fillStyle = 'black';
+    this.kontekst.fill();
   }
-  // onCanvasClick(event: MouseEvent): void {
-  //   const rect = this.canvasRef.nativeElement.getBoundingClientRect();
-  //   const x = event.clientX - rect.left;
-  //   const y = event.clientY - rect.top;
   
-  //   if (this.isPointInsidePolygon({ x, y })) {
-  //     console.log('The point is inside the polygon.');
-  //   } else {
-  //     console.log('The point is outside the polygon.');
-  //   }
-  // }
+  jeLiTackaUPoligonu(tacka: { x: number; y: number }): boolean {
+    let presjeci = 0;
+    const testLinija = { a: tacka, b: { x: this.canvasRef.nativeElement.width + 1, y: tacka.y } };
   
-  isPointInsidePolygon(point: { x: number; y: number }): boolean {
-    let intersections = 0;
-    const testLine = { a: point, b: { x: this.canvasRef.nativeElement.width + 1, y: point.y } };
+    for (let i = 0; i < this.tacke.length; i++) {
+      const a = this.tacke[i];
+      const b = this.tacke[(i + 1) % this.tacke.length];
   
-    for (let i = 0; i < this.points.length; i++) {
-      const a = this.points[i];
-      const b = this.points[(i + 1) % this.points.length];
-  
-      const isIntersecting = this.doLineSegmentsIntersect(a, b, testLine.a, testLine.b);
-      if (isIntersecting) {
-        intersections++;
+      const daLiSePresjeca = this.daLiSeLinijeSijeku(a, b, testLinija.a, testLinija.b);
+      if (daLiSePresjeca) {
+        presjeci++;
       }
     }
   
-    return intersections % 2 !== 0;
+    return presjeci % 2 !== 0;
   }
   
-  doLineSegmentsIntersect(a1: { x: number; y: number }, a2: { x: number; y: number }, b1: { x: number; y: number }, b2: { x: number; y: number }): boolean {
+  daLiSeLinijeSijeku(a1: { x: number; y: number }, a2: { x: number; y: number }, b1: { x: number; y: number }, b2: { x: number; y: number }): boolean {
     const d = (a1.x - a2.x) * (b2.y - b1.y) - (a1.y - a2.y) * (b2.x - b1.x);
     if (d === 0) return false;
   
@@ -147,74 +135,73 @@ export class SimplePolygonComponent implements AfterViewInit {
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
   
-    if (!this.lineStart) {
-      this.lineStart = { x, y };
-    } else if (!this.lineEnd) {
-      this.lineEnd = { x, y };
-      this.drawLineSegment(this.lineStart, this.lineEnd);
+    if (!this.pocetakSegmenta) {
+      this.pocetakSegmenta = { x, y };
+    } else if (!this.krajSegmenta) {
+      this.krajSegmenta = { x, y };
+      this.crtajLineSegment(this.pocetakSegmenta, this.krajSegmenta);
   
-      if (this.doPolylineSegmentsIntersect(this.lineStart, this.lineEnd)) {
-        alert('The line segment intersects the polygon.');
+      if (this.ispitivanjePresjeka(this.pocetakSegmenta, this.krajSegmenta)) {
+        alert('Segment siječe poligon.');
       } else {
-        const midpoint = { x: (this.lineStart.x + this.lineEnd.x) / 2, y: (this.lineStart.y + this.lineEnd.y) / 2 };
-        if (this.isPointInsidePolygon(midpoint)) {
-          alert('The line segment is inside the polygon.');
+        const midtacka = { x: (this.pocetakSegmenta.x + this.krajSegmenta.x) / 2, y: (this.pocetakSegmenta.y + this.krajSegmenta.y) / 2 };
+        if (this.jeLiTackaUPoligonu(midtacka)) {
+          alert('Segment je u poligonu.');
         } else {
-          alert('The line segment is outside the polygon.');
+          alert('Segment je van poligona.');
         }
       }
   
-      // Reset the line segment points
-      this.lineStart = null;
-      this.lineEnd = null;
+      this.pocetakSegmenta = null;
+      this.krajSegmenta = null;
     }}else{
         const rect = this.canvasRef.nativeElement.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
   
-    if (this.isPointInsidePolygon({ x, y })) {
-      alert('The point is inside the polygon.');
+    if (this.jeLiTackaUPoligonu({ x, y })) {
+      alert('Tacka je u poligonu.');
     } else {
-      alert('The point is outside the polygon.');
+      alert('Tacka nije u poligonu.');
     }
     }
   }
   
 
-drawLineSegment(start: { x: number; y: number }, end: { x: number; y: number }): void {
-  this.context.beginPath();
-  this.context.moveTo(start.x, start.y);
-  this.context.lineTo(end.x, end.y);
-  this.context.stroke();
+crtajLineSegment(start: { x: number; y: number }, end: { x: number; y: number }): void {
+  this.kontekst.beginPath();
+  this.kontekst.moveTo(start.x, start.y);
+  this.kontekst.lineTo(end.x, end.y);
+  this.kontekst.stroke();
 }
 
-doPolylineSegmentsIntersect(lineStart: { x: number; y: number }, lineEnd: { x: number; y: number }): boolean {
-  for (let i = 0; i < this.points.length; i++) {
-    const a = this.points[i];
-    const b = this.points[(i + 1) % this.points.length];
+ispitivanjePresjeka(pocetakSegmenta: { x: number; y: number }, krajSegmenta: { x: number; y: number }): boolean {
+  for (let i = 0; i < this.tacke.length; i++) {
+    const a = this.tacke[i];
+    const b = this.tacke[(i + 1) % this.tacke.length];
 
-    if (this.doLineSegmentsIntersect(a, b, lineStart, lineEnd)) {
+    if (this.daLiSeLinijeSijeku(a, b, pocetakSegmenta, krajSegmenta)) {
       return true;
     }
   }
 
   return false;
 }
-getPolygonOrientation() {
-  const n = this.points.length;
-  let area = 0;
+orjentacijaPoligona() {
+  const n = this.tacke.length;
+  let prvrsina = 0;
 
   for (let i = 0; i < n; i++) {
     const j = (i + 1) % n;
-    area += (this.points[i].x * this.points[j].y) - (this.points[j].x * this.points[i].y);
+    prvrsina += (this.tacke[i].x * this.tacke[j].y) - (this.tacke[j].x * this.tacke[i].y);
   }
 
-  if (area < 0) {
-    alert ("Clockwise");
-  } else if (area > 0) {
-    alert ('Counterclockwise');
+  if (prvrsina < 0) {
+    alert ("U smijeru kazaljke");
+  } else if (prvrsina > 0) {
+    alert ('U smijeru obrnuto od kazaljke');
   } else {
-    alert( 'Undefined');
+    alert( 'Nedefinisano');
   }
 }
 

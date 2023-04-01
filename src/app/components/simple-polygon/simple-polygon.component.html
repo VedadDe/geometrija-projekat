@@ -1,8 +1,8 @@
 <div class="container">
-    <button (click)="segmentOrPoint()">{{segment == true ? "segment" : "tačka"}}</button>
-    <input [(ngModel)]="n" type="number" min="3" placeholder="Enter the number of points (n)" />
-    <button (click)="generatePolygon()">Create Polygon</button>
-    <button (click)="getPolygonOrientation()">Check Polygon Orientation</button>
+    <button (click)="segmentIlitacka()">{{segment == true ? "segment" : "tačka"}}</button>
+    <input [(ngModel)]="n" type="number" min="3" placeholder="Unesite broj tački (n)" />
+    <button (click)="generisiPoligon()">Kreiraj poligon</button>
+    <button (click)="orjentacijaPoligona()">Ispitaj orijentaciju poligona</button>
     <canvas #polygonCanvas (click)="onCanvasClick($event)"></canvas>
 </div>
   
