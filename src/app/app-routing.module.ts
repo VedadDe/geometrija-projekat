@@ -9,18 +9,24 @@ import { SetPointsTriangleComponent } from './components/set-points-triangle/set
 import { SimplePolygonComponent } from './components/simple-polygon/simple-polygon.component';
 import { TwoLinesIntersectionsComponent } from './components/two-lines-intersections/two-lines-intersections.component';
 import { ConvexCheckDokumentacijaComponent } from './dokumentacija/convex-check-dokumentacija/convex-check-dokumentacija.component';
+import { PointsDocumentatrionDokumentacijaComponent } from './dokumentacija/points-documentatrion-dokumentacija/points-documentatrion-dokumentacija.component';
+import { SetPointsTriangleDokumentacijaComponent } from './dokumentacija/set-points-triangle-dokumentacija/set-points-triangle-dokumentacija.component';
+import { TwoLinesIntersectionsDokumentacijaComponent } from './dokumentacija/two-lines-intersections-dokumentacija/two-lines-intersections-dokumentacija.component';
 
 const routes: Routes = [  
-{ path: 'jarwis-march', component: JarwisMarchComponent },//1
-{ path: 'point-triangle', component: PointInsideTriangleComponent},//2
-{ path: 'points-orientation', component: PointsOrientationComponent},//3
-{ path: 'two-segments', component: TwoLinesIntersectionsComponent},//4
-{ path: 'simple-polygon', component: SimplePolygonComponent},//5//6//point inside polygon
-{ path: 'convex-check', component: ConvexCheckComponent},//6
-{ path: 'set-triangle', component: SetPointsTriangleComponent},//6
-{ path: 'multiple-segments', component: MultipleSegmentsComponent},
+{ path: 'jarwis-march', component: JarwisMarchComponent },//!
+{ path: 'point-triangle', component: PointInsideTriangleComponent},//!
+{ path: 'points-orientation', component: PointsOrientationComponent},//
+{ path: 'two-segments', component: TwoLinesIntersectionsComponent},//
+{ path: 'simple-polygon', component: SimplePolygonComponent},//!
+{ path: 'convex-check', component: ConvexCheckComponent},//
+{ path: 'set-triangle', component: SetPointsTriangleComponent},//
+{ path: 'multiple-segments', component: MultipleSegmentsComponent},//!
 ///////////////////////////////////////////////////////////////////////////////////////////////
 { path: 'convex-check-dokumentacija', component: ConvexCheckDokumentacijaComponent},
+{ path: 'two-segments-dokumentacija', component: TwoLinesIntersectionsDokumentacijaComponent},
+{ path: 'set-triangle-dokumentacija', component: SetPointsTriangleDokumentacijaComponent},
+{ path: 'points-orientation-dokumentacija', component: PointsDocumentatrionDokumentacijaComponent},
 ];
 
 @NgModule({

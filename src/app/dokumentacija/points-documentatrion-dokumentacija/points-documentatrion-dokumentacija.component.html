@@ -1,0 +1,59 @@
+<h1>Orijentacija tačaka</h1>
+    <p>U ovom kodu implementirana je Angular komponenta za detekciju orijentacije tačaka na platnu.</p>
+    <h2>VArijable</h2>
+    <ul>
+        <li><code>prikaziModal</code>: boolean promenljiva koja kontroliše prikaz modala.</li>
+        <li><code>jeU_smeruKazaljke</code>: boolean promenljiva koja pokazuje da li su tačke u smeru kazaljke na satu.</li>
+        <li><code>tacke</code>: niz objekata tipa <code>Tacka</code>.</li>
+    </ul>
+    
+    <h2>Strukture</h2>
+    <ul>
+        <li>
+            <code>Tacka</code>: interfejs koji definiše strukturu tačke sa koordinatama <code>x</code> i <code>y</code>.
+        </li>
+    </ul>
+    
+    <h2>Funkcije</h2>
+    <dl>
+        <dt><code>ngOnInit(): void</code></dt>
+        <dd>Postavlja platno i čisti ga. Ova funkcija se poziva pri inicijalizaciji komponente.</dd>
+        <dd><strong>Ulaz</strong>: Nema ulaznih parametara.</dd>
+        <dd><strong>Izlaz</strong>: Nema povratne vrednosti.</dd>
+    
+        <dt><code>klikNacanvas(event: MouseEvent): void</code></dt>
+        <dd>
+            Ova funkcija se poziva kada korisnik klikne na platno. Dodaje novu tačku u niz <code>tacke</code> i iscrtava
+            je na platnu. Ako je dužina niza <code>tacke</code> jednaka 3, proverava orijentaciju tačaka i prikazuje
+            modal.
+        </dd>
+        <dd><strong>Ulaz</strong>: <code>event</code> - MouseEvent objekat koji sadrži informacije o događaju klika.</dd>
+        <dd><strong>Izlaz</strong>: Nema povratne vrednosti.</dd>
+    
+        <dt><code>daLiSuTackeUSmeruKazaljke(tacke: Tacka[]): boolean</code></dt>
+        <dd>
+            Ova funkcija prima niz od tri tačke i vraća <code>true</code> ako su tačke u smeru kazaljke na satu, inače
+            vraća <code>false</code>.
+        </dd>
+        <dd><strong>Ulaz</strong>: <code>tacke</code> - Niz objekata tipa <code>Tacka</code> sa tačkama za proveru.</dd>
+        <dd><strong>Izlaz</strong>: boolean vrednost koja pokazuje da li su tačke u smeru kazaljke na satu (<code>true</code>) ili nisu (<code>false</code>).
+        </dd>
+        <dt><code>zatvoriModal(): void</code></dt>
+        <dd>
+            Ova funkcija zatvara modal, resetuje promenljive <code>jeU_smeruKazaljke</code> i <code>tacke</code>, te
+            čisti platno.
+        </dd>
+        <dd><strong>Ulaz</strong>: Nema ulaznih parametara.</dd>
+        <dd><strong>Izlaz</strong>: Nema povratne vrednosti.</dd>
+    </dl>
+    
+    
+    
+    <h2>Glavna logika</h2>
+    <p>
+        Komponenta omogućuje korisniku da klikne na platno i dodaje tačke. Kada se dodaju tri tačke, komponenta
+        proverava orijentaciju tačaka (da li su u smeru kazaljke na satu) i prikazuje modal sa
+        informacijama o orijentaciji. Korisnik može zatvoriti modal, što će rezultirati resetovanjem komponente i brisanjem dodatih tačaka sa platna. Glavna logika komponente sastoji se od kombinacije funkcija i promenljivih koje omogućavaju interakciju sa platnom i obradu podataka o tačkama.
+    </p>
+    
+    

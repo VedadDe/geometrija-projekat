@@ -15,6 +15,8 @@ import { HeaderComponent } from './header/header.component';
 import { SetPointsTriangleComponent } from './components/set-points-triangle/set-points-triangle.component';
 import { ConvexCheckDokumentacijaComponent } from './dokumentacija/convex-check-dokumentacija/convex-check-dokumentacija.component';
 import { TwoLinesIntersectionsDokumentacijaComponent } from './dokumentacija/two-lines-intersections-dokumentacija/two-lines-intersections-dokumentacija.component';
+import { SetPointsTriangleDokumentacijaComponent } from './dokumentacija/set-points-triangle-dokumentacija/set-points-triangle-dokumentacija.component';
+import { PointsDocumentatrionDokumentacijaComponent } from './dokumentacija/points-documentatrion-dokumentacija/points-documentatrion-dokumentacija.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { TwoLinesIntersectionsDokumentacijaComponent } from './dokumentacija/two
     HeaderComponent,
     SetPointsTriangleComponent,
     ConvexCheckDokumentacijaComponent,
-    TwoLinesIntersectionsDokumentacijaComponent
+    TwoLinesIntersectionsDokumentacijaComponent,
+    SetPointsTriangleDokumentacijaComponent,
+    PointsDocumentatrionDokumentacijaComponent
   ],
   imports: [
     BrowserModule,

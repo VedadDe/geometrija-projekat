@@ -8,94 +8,92 @@ import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/co
 export class SetPointsTriangleComponent {
   @ViewChild('canvas', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
   private ctx!: CanvasRenderingContext2D;
-  private trianglePoints: [number, number][] = [];
-  private randomPoints: [number, number][] = [];
+  private trokutTacke: [number, number][] = [];
+  private nasumicneTacke: [number, number][] = [];
 
   constructor() {}
 
   ngOnInit(): void {
-    const context = this.canvas.nativeElement.getContext('2d');
-    if (!context) {
-      console.error('Failed to get 2D context');
+    const kontekst = this.canvas.nativeElement.getContext('2d');
+    if (!kontekst) {
+      console.error('Neuspjelo dobavljanje 2D konteksta');
       return;
     }
-    this.ctx = context;
+    this.ctx = kontekst;
     this.canvas.nativeElement.addEventListener('click', (event: MouseEvent) => {
-      this.handleCanvasClick(event);
+      this.obradiKlikNaPlatnu(event);
     });
   }
 
-  handleCanvasClick(event: MouseEvent): void {
-    if (this.trianglePoints.length < 3) {
-      const rect = this.canvas.nativeElement.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-      this.trianglePoints.push([x, y]);
-      this.drawPoint(x, y);
-      if (this.trianglePoints.length === 3) {
-        this.drawTriangle();
+  obradiKlikNaPlatnu(event: MouseEvent): void {
+    if (this.trokutTacke.length < 3) {
+      const pravougaonik = this.canvas.nativeElement.getBoundingClientRect();
+      const x = event.clientX - pravougaonik.left;
+      const y = event.clientY - pravougaonik.top;
+      this.trokutTacke.push([x, y]);
+      this.crtajTacku(x, y);
+      if (this.trokutTacke.length === 3) {
+        this.crtajTrokut();
       }
     }
   }
-  generateRandomPoints(): void {
-    if (this.trianglePoints.length !== 3) {
-      alert('Please create a triangle by clicking on the canvas first.');
+  generisiNasumicneTacke(): void {
+    if (this.trokutTacke.length !== 3) {
+      alert('Prvo kreirajte trokut klikom na canvas.');
       return;
     }
     
-    this.randomPoints = [];
+    this.nasumicneTacke = [];
     for (let i = 0; i < 100000; i++) {
       const x = Math.floor(Math.random() * this.canvas.nativeElement.width);
       const y = Math.floor(Math.random() * this.canvas.nativeElement.height);
-      this.randomPoints.push([x, y]);
+      this.nasumicneTacke.push([x, y]);
   
-      if (this.isPointInsideTriangle(x, y)) {
-        this.drawPoint(x, y, 'red');
+      if (this.daLiJeTackaUnutarTrokuta(x, y)) {
+        this.crtajTacku(x, y, 'red');
       } else {
-        this.drawPoint(x, y, 'blue');
+        this.crtajTacku(x, y, 'blue');
       }
     }
   }
-  
 
-
-  isPointInsideTriangle(x: number, y: number): boolean {
-    const [A, B, C] = this.trianglePoints.map(point => point as [number, number]);
+  daLiJeTackaUnutarTrokuta(x: number, y: number): boolean {
+    const [A, B, C] = this.trokutTacke.map(tacka => tacka as [number, number]);
     const P: [number, number] = [x, y];
 
-    const areaABC = this.triangleArea(A, B, C);
-    const areaABP = this.triangleArea(A, B, P);
-    const areaBCP = this.triangleArea(B, C, P);
-    const areaCAP = this.triangleArea(C, A, P);
+    const povrsinaABC = this.povrsinaTrokuta(A, B, C);
+    const povrsinaABP = this.povrsinaTrokuta(A, B, P);
+    const povrsinaBCP = this.povrsinaTrokuta(B, C, P);
+    const povrsinaCAP = this.povrsinaTrokuta(C, A, P);
 
-    return areaABC === areaABP + areaBCP + areaCAP;
+    return povrsinaABC === povrsinaABP + povrsinaBCP + povrsinaCAP;
   }
 
-  triangleArea([x1, y1]: [number, number], [x2, y2]: [number, number], [x3, y3]: [number, number]): number {
+  povrsinaTrokuta([x1, y1]: [number, number], [x2, y2]: [number, number], [x3, y3]: [number, number]): number {
     return Math.abs((x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2);
   }
 
-  drawPoint(x: number, y: number, color: string = 'blue'): void {
-    this.ctx.fillStyle = color;
+  crtajTacku(x: number, y: number, boja: string = 'plava'): void {
+    this.ctx.fillStyle = boja;
     this.ctx.beginPath();
     this.ctx.arc(x, y, 2, 0, 2 * Math.PI);
     this.ctx.fill();
   }
 
-  drawTriangle(): void {
+  crtajTrokut(): void {
     this.ctx.beginPath();
-    this.ctx.moveTo(this.trianglePoints[0][0], this.trianglePoints[0][1]);
-    this.ctx.lineTo(this.trianglePoints[1][0], this.trianglePoints[1][1]);
-    this.ctx.lineTo(this.trianglePoints[2][0], this.trianglePoints[2][1]);
+    this.ctx.moveTo(this.trokutTacke[0][0], this.trokutTacke[0][1]);
+    this.ctx.lineTo(this.trokutTacke[1][0], this.trokutTacke[1][1]);
+    this.ctx.lineTo(this.trokutTacke[2][0], this.trokutTacke[2][1]);
     this.ctx.closePath();
     this.ctx.strokeStyle = 'green';
     this.ctx.lineWidth = 2;
     this.ctx.stroke();
   }
 
-  clearCanvas(): void {
-    this.trianglePoints = [];
-    this.randomPoints = [];
+  ocisticanvas(): void {
+    this.trokutTacke = [];
+    this.nasumicneTacke = [];
     this.ctx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
   }
 }

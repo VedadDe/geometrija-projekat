@@ -1,63 +1,55 @@
-<h1>Komponenta Provjera Konveksnosti</h1>
-<p>
-Ova Angular komponenta se koristi za provjeru da li je četverougao konveksan ili nije. 
-Korisnicima omogućava da crtaju četverougao klikom na platno kako bi kreirali tačke.
-</p>
-<h2>Interfejs</h2>
-<pre><code>interface Tacka 
-  x: number;
-  y: number;
-</code></pre>
-<p>
-Ovaj interfejs definiše tačku (Tacka) sa x i y koordinatama.
-</p>
-<h2>Ulazi</h2>
-<p>Nema ulaza za ovu komponentu.</p>
-<h2>Izlazi</h2>
-<p>Nema izlaza za ovu komponentu.</p>
-<h2>Glavna Logika</h2>
-<div>
-Glavna logika ove komponente se sastoji od sljedećih koraka:
+<h1>Komponenta Provjere presjeka dva linijska segmenta</h1>
+<p>Ova Angular komponenta se koristi za prikaz platna na kojem korisnik može nacrtati dvije linije. Ako se linije presijecaju, komponenta će prikazati obavijest.</p>
+<h2>Varijable:</h2>
 <ol>
-  <li>Kada se klikne na canvas, poziva se funkcija handleClick()</li>
-  <li>handleClick() obrađuje događaj dodavanja točaka i provjerava jesu li linije presječene</li>
+  <li><code>canvasRef</code>: ElementRef objekat koji referencira platno.</li>
+  <li><code>kontekst</code>: CanvasRenderingContext2D objekat koji omogućava crtanje na platnu.</li>
+  <li><code>tacke</code>: Niz koji sadrži koordinate tačaka za dve linije.</li>
 </ol>
-</div>
-<h2>Varijable</h2>
-<ul>
+<h2>Funkcije:</h2>
+<ol>
   <li>
-    <code>referencaPlatna</code>: Referenca na element platna.
+    <code>ngAfterViewInit()</code>: Inicijalizira kontekst platna.
+    <ul>
+      <li>Ulaz: Nema</li>
+      <li>Izlaz: Nema</li>
+    </ul>
   </li>
   <li>
-    <code>ctx</code>: 2D rendering kontekst za element platna.
+    <code>handleClick(dogadjaj: MouseEvent)</code>: Dodaje tačku na platno, crta linije i provjerava da li se linije presijecaju.
+    <ul>
+      <li>Ulaz: dogadjaj - MouseEvent objekat koji sadrži informacije o kliktanju mišem.</li>
+      <li>Izlaz: Nema</li>
+    </ul>
   </li>
   <li>
-    <code>tacke</code>: Niz za pohranjivanje tačaka koje je korisnik kreirao.
+    <code>nacrtajTacku(x: number, y: number)</code>: Crtanje tačke na platnu.
+    <ul>
+      <li>Ulaz: x, y - koordinate tačke</li>
+      <li>Izlaz: Nema</li>
+    </ul>
   </li>
   <li>
-    <code>jeKonveksan</code>: Boolean vrijednost koja određuje da li je četverougao konveksan ili ne.
-  </li>
-</ul>
-<h2>Metode</h2>
-<ul>
-  <li>
-    <code>ngAfterViewInit()</code>: Inicijalizira 2D rendering kontekst nakon što je pogled komponente inicijaliziran.
+    <code>nacrtajLiniju(pocetak: [number, number], kraj: [number, number])</code>: Crtanje linije na platnu.
+    <ul>
+      <li>Ulaz: pocetak, kraj - koordinate početka i kraja linije</li>
+      <li>Izlaz: Nema</li>
+    </ul>
   </li>
   <li>
-    <code>naKlikPlatna(event: MouseEvent)</code>: Obrađuje klik događaj na platnu za kreiranje tačaka i provjerava da li je četverougao konveksan ili ne.
+    <code>linijePresjecaju(a1: [number, number], a2: [number, number], b1: [number, number], b2: [number, number])</code>: Provjerava da li se dvije linije presijecaju.
+    <ul>
+      <li>Ulaz: a1, a2, b1, b2 - koordinate početka i kraja dvije linije</li>
+      <li>Izlaz: boolean - true ako se linije presijecaju, false ako se ne presijecaju</li>
+    </ul>
   </li>
-  <li>
-    <code>ocisticanvas()</code>: Briše platno i resetuje niz tačaka i status konveksnosti.
-  </li>
-  <li>
-    <code>nacrtajTacku(tacka: Tacka)</code>: Crtanje tačke na platnu.
-  </li>
-  <li>
-    <code>nacrtajCetvorougaonik(tacke: Tacka[])</code>: Crtanje četverougla na platnu p
-  </li>
-  <li>
-    <code>private provjeraKonveksnosti(tacke: Tacka[]): boolean</code>: Kao ulaz uzima niz tački. Sadrži glavnu logiku algoritma i kao izlaz vraća bool vrijednost jeLiKonveksan
-  </li>
-
-
-  
+</ol>
+<h2>Glavna logika:</h2>
+<p>Glavna logika komponente se odvija kroz sljedeće korake:</p>
+  <ol>
+    <li>Korisnik klika na platno, što pokreće funkciju <code>handleClick</code>.</li>
+    <li>Funkcija <code>handleClick</code> dodaje koordinate tačke u niz <code>tacke</code> i poziva funkciju <code>nacrtajTacku</code> za crtanje tačke na platnu.</li>
+    <li>Kada korisnik nacrta četiri tačke, funkcija <code>handleClick</code> crta dvije linije pomoću funkcije <code>nacrtajLiniju</code> i provjerava da li se linije presijecaju pozivajući funkciju <code>linijePresjecaju</code>.</li>
+    <li>Ako se linije presijecaju, prikazuje se obavijest "Linije se presjecaju". Ako se linije ne presijecaju, prikazuje se obavijest "Linije se ne presjecaju".</li>
+    <li>Nakon toga, niz <code>tacke</code> se prazni kako bi se omogućilo crtanje novih linija.</li>
+  </ol>
