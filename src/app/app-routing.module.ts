@@ -9,6 +9,7 @@ import { SetPointsTriangleComponent } from './components/set-points-triangle/set
 import { SimplePolygonComponent } from './components/simple-polygon/simple-polygon.component';
 import { TwoLinesIntersectionsComponent } from './components/two-lines-intersections/two-lines-intersections.component';
 import { ConvexCheckDokumentacijaComponent } from './dokumentacija/convex-check-dokumentacija/convex-check-dokumentacija.component';
+import { JarvisMarchDokumentacijaComponent } from './dokumentacija/jarvis-march-dokumentacija/jarvis-march-dokumentacija.component';
 import { PointInsideTriangleDokumentacijaComponent } from './dokumentacija/point-inside-triangle-dokumentacija/point-inside-triangle-dokumentacija.component';
 import { PointsDocumentatrionDokumentacijaComponent } from './dokumentacija/points-documentatrion-dokumentacija/points-documentatrion-dokumentacija.component';
 import { SetPointsTriangleDokumentacijaComponent } from './dokumentacija/set-points-triangle-dokumentacija/set-points-triangle-dokumentacija.component';
@@ -29,6 +30,7 @@ const routes: Routes = [
 { path: 'set-triangle-dokumentacija', component: SetPointsTriangleDokumentacijaComponent},
 { path: 'points-orientation-dokumentacija', component: PointsDocumentatrionDokumentacijaComponent},
 { path: 'point-triangle-dokumentacija', component: PointInsideTriangleDokumentacijaComponent},
+{ path: 'jarwis-march-dokumentacija', component: JarvisMarchDokumentacijaComponent},
 ];
 
 @NgModule({

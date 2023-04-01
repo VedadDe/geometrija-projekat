@@ -1,0 +1,109 @@
+<h1>Komponenta JarwisMarch</h1>
+	<p>Ova Angular komponenta implementira dva algoritma za izračunavanje omotača skupa tačaka: Jarvisov marš i Grahamov algoritam. Komponenta omogućava generisanje slučajnih tačaka na platnu, crtanje tačaka i omotača na platnu i pokretanje algoritama.</p>
+    <h2>Varijable</h2>
+<ul>
+	<li><code>tacke</code>: niz objekata koji predstavljaju tačke. Svaka tačka ima dva svojstva <code>x</code> i <code>y</code>.</li>
+</ul>
+
+<h2>Strukture</h2>
+<ul>
+	<li><code>  x: number; y: number  </code>: objekat koji predstavlja tačku na platnu. <code>x</code> i <code>y</code> su koordinate tačke na platnu.</li>
+</ul>
+
+<h2>Interfejsi</h2>
+<ul>
+	<li><code>ElementRef</code>: interfejs koji opisuje referencu na element na DOM stablu.</li>
+	<li><code>CanvasRenderingContext2D</code>: interfejs koji opisuje kontekst platna za crtanje.</li>
+</ul>
+
+<h2>Funkcije</h2>
+<h3><code>ngOnInit(): void</code></h3>
+<p>Metoda koja se poziva nakon inicijalizacije komponente. U ovoj metodi se postavljaju osnovne karakteristike platna, kao što su širina i visina, i definise se događaj klika na platnu. Kada korisnik klikne na platno, poziva se metoda <code>crtajTacke()</code> za iscrtavanje tačaka na platnu.</p>
+
+<h3><code>vektorskiProizvod(o:   x: number; y: number  , a:   x: number; y: number  , b:   x: number; y: number  ): number</code></h3>
+<p>Metoda koja izračunava vektorski proizvod dva vektora.</p>
+<ul>
+	<li><code>o</code>: objekat koji predstavlja početnu tačku vektora</li>
+	<li><code>a</code>: objekat koji predstavlja krajnju tačku prvog vektora</li>
+	<li><code>b</code>: objekat koji predstavlja krajnju tačku drugog vektora</li>
+	<li><b>Povratna vrijednost:</b> broj koji predstavlja vektorski proizvod dva vektora.</li>
+</ul>
+
+<h3><code>porediPolarniUgao(tacka0:   x: number; y: number  , a:   x: number; y: number  , b:   x: number; y: number  ): number</code></h3>
+<p>Metoda koja poredi polarni ugao između tri tačke i određuje koji od dva segmenta čini manji ugao u odnosu na početnu tačku. Metoda se koristi u Grahamovom algoritmu.</p>
+	<ul>
+		<li><code>tacka0</code>: objekat koji predstavlja početnu tačku u polaranom koordinatnom sistemu</li>
+		<li><code>a</code>: objekat koji predstavlja krajnju tačku prvog segmenta</li>
+		<li><code>b</code>: objekat koji predstavlja krajnju tačku drugog segmenta</li>
+		<li><b>Povratna vrijednost:</b> broj koji predstavlja ugao između tačaka <code>tacka0</code>, <code>a</code> i <code>b</code>.</li>
+	</ul>
+    <h3><code>pokreniJarvisMarch(): void</code></h3>
+<p>Metoda koja pokreće Jarvisov algoritam za određivanje omotača skupa tačaka. Metoda izračunava omotač pozivajući metodu <code>jarvisMarch()</code> i crta omotač na platno pozivajući metodu <code>crtajOmotac()</code>.</p>
+
+<h3><code>pokreniGrahamScan(): void</code></h3>
+<p>Metoda koja pokreće Grahamov algoritam za određivanje omotača skupa tačaka. Metoda izračunava omotač pozivajući metodu <code>grahamovAlgoritam()</code> i crta omotač na platno pozivajući metodu <code>crtajOmotac()</code>.</p>
+
+<h3><code>jarvisMarch(tacke:   x: number; y: number  []):   x: number; y: number  []</code></h3>
+<p>Metoda koja implementira Jarvisov algoritam za određivanje omotača skupa tačaka. Metoda prolazi kroz sve tačke i određuje one koje čine omotač. Metoda vraća niz objekata koji predstavljaju tačke koje čine omotač.</p>
+<ul>
+	<li><code>tacke</code>: niz objekata koji predstavljaju tačke za koje se traži omotač</li>
+	<li><b>Povratna vrijednost:</b> niz objekata koji predstavljaju tačke koje čine omotač</li>
+</ul>
+
+<h3><code>grahamovAlgoritam(tacke:   x: number; y: number  []):   x: number; y: number  []</code></h3>
+<p>Metoda koja implementira Grahamov algoritam za određivanje omotača skupa tačaka. Metoda prvo pronalazi tačku sa najmanjom y koordinatom, a u slučaju iste y koordinate, tačku sa najmanjom x koordinatom. Zatim sortira ostale tačke po polarnom uglu u odnosu na ovu tačku i konstruiše omotač. Metoda vraća niz objekata koji predstavljaju tačke koje čine omotač.</p>
+<ul>
+    <li><code>tacke</code>: niz objekata koji predstavljaju tačke za koje se traži omotač</li>
+    <li><b>Povratna vrijednost:</b> niz objekata koji predstavljaju tačke koje čine omotač</li>
+</ul>
+<h3><code>jeSuprotnoOdSata(p1:   x: number; y: number  , p2:   x: number; y: number  , p3:   x: number; y: number  ): boolean</code></h3>
+<p>Metoda koja provjerava da li se tačke <code>p1</code>, <code>p2</code> i <code>p3</code> nalaze u suprotnom smjeru od kazaljke na satu. Metoda se koristi u Grahamovom algoritmu za određivanje omotača skupa tačaka.</p>
+<ul>
+	<li><code>p1</code>: objekat koji predstavlja prvu tačku</li>
+	<li><code>p2</code>: objekat koji predstavlja drugu tačku</li>
+	<li><code>p3</code>: objekat koji predstavlja treću tačku</li>
+	<li><b>Povratna vrijednost:</b> <code>true</code> ako se tačke nalaze u suprotnom smjeru od kazaljke na satu, inače <code>false</code>.</li>
+</ul>
+
+<h3><code>crtajOmotac(kontekst: CanvasRenderingContext2D | null, omotac:   x: number; y: number  []): void</code></h3>
+<p>Metoda koja crta omotač skupa tačaka na platno. Metoda koristi HTML5 Canvas API za crtanje.</p>
+<ul>
+	<li><code>kontekst</code>: objekat koji predstavlja kontekst za crtanje na platnu</li>
+	<li><code>omotac</code>: niz objekata koji predstavljaju tačke koje čine omotač</li>
+	<li><b>Povratna vrijednost:</b> nema povratne vrijednosti.</li>
+</ul>
+
+<h3><code>crtajTacke(kontekst: CanvasRenderingContext2D): void</code></h3>
+<p>Metoda koja crta tačke na platnu. Metoda koristi HTML5 Canvas API za crtanje.</p>
+<ul>
+	<li><code>kontekst</code>: objekat koji predstavlja kontekst za crtanje na platnu</li>
+	<li><b>Povratna vrijednost:</b> nema povratne vrijednosti.</li>
+</ul>
+
+<h3><code>generisiTacke(): void</code></h3>
+<p>Metoda koja generiše slučajne tačke na platnu . Metoda služi za testiranje algoritama za određivanje omotača. Metoda slučajno generiše tačke na platnu i crta ih na platnu.</p>
+<ul>
+    <li><b>Povratna vrijednost:</b> nema povratne vrijednosti.</li>
+    </ul>
+    <h3><code>pokreniJarvisMarch(): void</code></h3>
+<p>Metoda koja pokreće Jarvisov marš algoritam za određivanje omotača skupa tačaka. Metoda koristi tačke koje su prethodno definisane i iscrtane na platnu. Nakon izvršavanja algoritma, metoda crta omotač na platnu.</p>
+<ul>
+	<li><b>Povratna vrijednost:</b> nema povratne vrijednosti.</li>
+</ul>
+
+<h3><code>pokreniGrahamScan(): void</code></h3>
+<p>Metoda koja pokreće Grahamov algoritam za određivanje omotača skupa tačaka. Metoda koristi tačke koje su prethodno definisane i iscrtane na platnu. Nakon izvršavanja algoritma, metoda crta omotač na platnu.</p>
+<ul>
+	<li><b>Povratna vrijednost:</b> nema povratne vrijednosti.</li>
+</ul>
+
+<h3>Glavna logika:</h3>
+<p>U glavnom dijelu koda se prvo definiše komponenta <code>JarwisMarchComponent</code>. Komponenta sadrži nekoliko metoda za crtanje tačaka, generisanje tačaka, pokretanje algoritama za određivanje omotača i crtanje omotača na platnu.</p>
+<p>U metodi <code>ngOnInit</code> se definiše šta će se desiti kada korisnik klikne na platno. Metoda prvo uzima platno preko ViewChild dekoratora, nakon čega definiše kontekst za crtanje na platnu. Nakon toga se definisuje širina i visina platna. Nakon toga se dodaje event listener na platno koji osluškuje klik korisnika. Kada korisnik klikne na platno, izračunavaju se koordinate klika u odnosu na platno, nakon čega se tačka dodaje u niz tačaka. Nakon dodavanja tačke u niz, poziva se metoda za crtanje tačaka.</p>
+<p>Metoda <code>vektorskiProizvod</code> računa vektorski proizvod tri tačke. Metoda se koristi u metodi <code>porediPolarniUgao</code>, koja poređuje tačke po polarnom uglu u odnosu na ovu tačku i konstruiše omotač.</p>
+<p>Metoda <code>jeSuprotnoOdSata</code> provjerava da li se tačke nalaze u suprotnom smjeru od kazaljke na satu. Ova metoda se koristi u Grahamovom algoritmu za određivanje omotača.</p>
+<p>Metoda <code>jarvisMarch</code> predstavlja implementaciju Jarvisovog marš algoritma za određivanje omotača skupa tačaka. Metoda pronalazi najnižu tačku i dodaje je u omotač. Zatim, metoda rotira liniju koja spaja trenutnu tačku i prethodnu tačku dok ne naiđe na tačku sa najvećim polarnim uglom. Ta tačka se dodaje u omotač i postaje trenutna tačka. Rotacija se ponavlja dok se ne vrati na početnu tačku.</p>
+<p>Metoda <code>grahamovAlgoritam</code> predstavlja implementaciju Grahamovog algoritma za određivanje omotača skupa tačaka. Metoda pronalazi najnižu tačku i sortira sve tačke po polarnom uglu u odnosu na tu tačku. Zatim, metoda prolazi kroz sve tačke i konstruiše omotač. U svakom koraku se provjerava da li se tačke nalaze u suprotnom smjeru od kazaljke na satu. Ako se nalaze, tačka se dodaje u omotač, inače se tačka odbacuje.</p>
+<p>Metoda <code>crtajOmotac</code> crta omotač na platno. Metoda prolazi kroz sve tačke u omotaču i povezuje ih linijama.</p>
+<p>Metoda <code>crtajTacke</code> crta sve tačke na platno. Metoda prolazi kroz sve tačke u nizu i iscrtava ih na platno.</p>
+<p>Metoda <code>generisiTacke</code> generiše nasumičan skup tačaka na platnu i iscrtava ih.</p>

@@ -18,6 +18,7 @@ import { TwoLinesIntersectionsDokumentacijaComponent } from './dokumentacija/two
 import { SetPointsTriangleDokumentacijaComponent } from './dokumentacija/set-points-triangle-dokumentacija/set-points-triangle-dokumentacija.component';
 import { PointsDocumentatrionDokumentacijaComponent } from './dokumentacija/points-documentatrion-dokumentacija/points-documentatrion-dokumentacija.component';
 import { PointInsideTriangleDokumentacijaComponent } from './dokumentacija/point-inside-triangle-dokumentacija/point-inside-triangle-dokumentacija.component';
+import { JarvisMarchDokumentacijaComponent } from './dokumentacija/jarvis-march-dokumentacija/jarvis-march-dokumentacija.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { PointInsideTriangleDokumentacijaComponent } from './dokumentacija/point
     TwoLinesIntersectionsDokumentacijaComponent,
     SetPointsTriangleDokumentacijaComponent,
     PointsDocumentatrionDokumentacijaComponent,
-    PointInsideTriangleDokumentacijaComponent
+    PointInsideTriangleDokumentacijaComponent,
+    JarvisMarchDokumentacijaComponent
   ],
   imports: [
     BrowserModule,
