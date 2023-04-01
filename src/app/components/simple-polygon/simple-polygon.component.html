@@ -1,8 +1,10 @@
+<h4>Broj tački se mogže dodati ispod ove poruke, gdje stoji broj tri koji označava defaultni i minimalni broj tački. Potom je potrebno kliknuti na dugme "Kreiraj poligon". Ukoliko lijevo od broja u dugmetu piše tačka, to znači da možemo kliknuti bilo gdje na kanvas unutar četverougla. Nakon klika prikazuje se poruka da li je kliknuto unutar ili van poligona. Ukoliko kliknemo na dugme lijevo od broja, u njemu više ne piše tačka nego segment. Potom pomoću dva klika generišemo segment na ekranu, nakon čega se javlja poruka u kakvom je on odnosu sa poligonom. Konačno na dugme "Ispitaj orijentaciju poligona" javlja se poruka da li je poligon u smijeru kazaljke na satu ili obrnuto.
+</h4>
 <div class="container">
     <button (click)="segmentIlitacka()">{{segment == true ? "segment" : "tačka"}}</button>
     <input [(ngModel)]="n" type="number" min="3" placeholder="Unesite broj tački (n)" />
     <button (click)="generisiPoligon()">Kreiraj poligon</button>
     <button (click)="orjentacijaPoligona()">Ispitaj orijentaciju poligona</button>
-    <canvas #polygonCanvas (click)="onCanvasClick($event)"></canvas>
+    <canvas #polygonCanvas style="border: 1px solid black" (click)="onCanvasClick($event)"></canvas>
 </div>
   

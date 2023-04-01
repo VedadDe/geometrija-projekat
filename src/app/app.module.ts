@@ -20,6 +20,7 @@ import { PointsDocumentatrionDokumentacijaComponent } from './dokumentacija/poin
 import { PointInsideTriangleDokumentacijaComponent } from './dokumentacija/point-inside-triangle-dokumentacija/point-inside-triangle-dokumentacija.component';
 import { JarvisMarchDokumentacijaComponent } from './dokumentacija/jarvis-march-dokumentacija/jarvis-march-dokumentacija.component';
 import { SimplePolygonDokumentacijaComponent } from './dokumentacija/simple-polygon-dokumentacija/simple-polygon-dokumentacija.component';
+import { MultipleSegmentsDokumentacijaComponent } from './dokumentacija/multiple-segments-dokumentacija/multiple-segments-dokumentacija.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { SimplePolygonDokumentacijaComponent } from './dokumentacija/simple-poly
     PointsDocumentatrionDokumentacijaComponent,
     PointInsideTriangleDokumentacijaComponent,
     JarvisMarchDokumentacijaComponent,
-    SimplePolygonDokumentacijaComponent
+    SimplePolygonDokumentacijaComponent,
+    MultipleSegmentsDokumentacijaComponent
   ],
   imports: [
     BrowserModule,
