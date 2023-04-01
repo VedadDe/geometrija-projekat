@@ -204,6 +204,24 @@ orjentacijaPoligona() {
     alert( 'Nedefinisano');
   }
 }
+generisiIIspitajNTacaka(): void {
+  const slucajneTacke = this.generisiRandomtacke(1000);
+
+  for (const tacka of slucajneTacke) {
+    if (this.jeLiTackaUPoligonu(tacka)) {
+      this.crtajTackeUBoji(tacka.x, tacka.y, 'red');
+    } else {
+      this.crtajTackeUBoji(tacka.x, tacka.y, 'blue');
+    }
+  }
+}
+
+crtajTackeUBoji(x: number, y: number, color: string): void {
+  this.kontekst.beginPath();
+  this.kontekst.arc(x, y, 3, 0, 2 * Math.PI);
+  this.kontekst.fillStyle = color;
+  this.kontekst.fill();
+}
 
   
 }
