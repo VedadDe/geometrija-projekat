@@ -27,10 +27,10 @@
   <li><code>private crtajtacka(x: number, y: number): void</code>: Metoda koja crta tačku na platnu na osnovu njenih koordinata.</li>
   <li><code>jeLiTackaUPoligonu(tacka:   x: number; y: number  ): boolean</code>: Metoda koja testira da li se tačka nalazi unutar poligona pomoću brojanja presjeka sa test linijom.</li>
   <li><code>daLiSeLinijeSijeku(a1:   x: number; y: number  , a2:   x: number; y: number  , b1:   x: number; y: number  , b2:   x: number; y: number  ): boolean</code>: Metoda koja testira da li se dvije linije sijeku pomoću determinante.</li>
-  <li><code>onCanvasClick(event: MouseEvent): void</code>: Metoda koja se poziva prilikom klika na platno. Ako je vrijednost varijable <code>segment</code> <code>true</code>, tada se crta segment i testira se da li se segment sijekao sa poligonom. Ako je vrijednost varijable <code>segment</code> <code>false</code>, tada se testira da li se kliknuta tačka nalazi unutar poligona.</li>
+  <li><code>onCanvasClick(event: MouseEvent): void</code>: Metoda koja se poziva prilikom klika na platno. Ako je vrijednost varijable <code>segment</code> <code>true</code>, tada se crta segment i testira se da li se segment siječe sa poligonom. Ako je vrijednost varijable <code>segment</code> <code>false</code>, tada se testira da li se kliknuta tačka nalazi unutar poligona.</li>
   <li><code>crtajLineSegment(start:   x: number; y: number  , end:   x: number; y: number  ): void</code>: Metoda koja crta segment linije na platnu na osnovu početne i krajnje tačke.</li>
-  <li><code>ispitivanjePresjeka(pocetakSegmenta:   x: number; y: number  , krajSegmenta:   x: number; y: number  ): boolean</code>: Metoda koja testira da li se segment linije sijekao sa poligonom na osnovu svih linija koje čine poligon.</li>
-  <li><code>orjentacijaPoligona(): void</code>: Metoda koja testira orijentaciju poligona na osnovu prvog momenta površine.</li>
+  <li><code>ispitivanjePresjeka(pocetakSegmenta:   x: number; y: number  , krajSegmenta:   x: number; y: number  ): boolean</code>: Metoda koja testira da li se segment linije sijeku sa poligonom na osnovu svih linija koje čine poligon.</li>
+  <li><code>orjentacijaPoligona(): void</code>: Metoda koja testira orijentaciju poligona .</li>
   </ul>
   
   <h2>Ulazne i izlazne vrijednosti</h2>
@@ -51,8 +51,8 @@
   <li><code>ngAfterViewInit(): void</code>: Metoda koja se poziva nakon što je komponenta inicijalizirana i platno je spremno za crtanje. Ova metoda dobavlja kontekst platna i postavlja njegovu veličinu na osnovu veličine prozora.</li>
   <li><code>generisiPoligon(): void</code>: Metoda koja generiše poligon sa <code>n</code> tačaka i sortira ih po polarnom uglu u odnosu na centroid poligona. Nakon toga se crta poligon i sve tačke poligona.</li>
   <li><code>jeLiTackaUPoligonu(tacka:   x: number; y: number  ): boolean</code>: Metoda koja testira da li se tačka nalazi unutar poligona. Ova metoda koristi metodu <code>daLiSeLinijeSijeku()</code> za brojanje presjeka sa test linijom.</li>
-  <li><code>onCanvasClick(event: MouseEvent): void</code>: Metoda koja se poziva prilikom klika na platno. Ako je vrijednost varijable <code>segment</code> <code>true</code>, tada se crta segment i testira se da li se segment sijekao sa poligonom. Ako je vrijednost varijable <code>segment</code> <code>false</code>, tada se testira da li se kliknuta tačka nalazi unutar poligona.</li>
-  <li><code>orjentacijaPoligona(): void</code>: Metoda koja testira orijentaciju poligona na osnovu prvog momenta površine.</li>
+  <li><code>onCanvasClick(event: MouseEvent): void</code>: Metoda koja se poziva prilikom klika na platno. Ako je vrijednost varijable <code>segment</code> <code>true</code>, tada se crta segment i testira se da li se segment siječe sa poligonom. Ako je vrijednost varijable <code>segment</code> <code>false</code>, tada se testira da li se kliknuta tačka nalazi unutar poligona.</li>
+  <li><code>orjentacijaPoligona(): void</code>: Metoda koja testira orijentaciju poligona.</li>
 </ul>
 
 <h2>Varijable</h2>

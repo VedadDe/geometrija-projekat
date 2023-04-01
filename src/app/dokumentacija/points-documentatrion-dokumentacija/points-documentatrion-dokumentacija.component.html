@@ -24,7 +24,7 @@
         <dt><code>klikNacanvas(event: MouseEvent): void</code></dt>
         <dd>
             Ova funkcija se poziva kada korisnik klikne na platno. Dodaje novu tačku u niz <code>tacke</code> i iscrtava
-            je na platnu. Ako je dužina niza <code>tacke</code> jednaka 3, proverava orijentaciju tačaka i prikazuje
+            je na platnu. Ako je dužina niza <code>tacke</code> jednaka 3, provjerava orijentaciju tačaka i prikazuje
             modal.
         </dd>
         <dd><strong>Ulaz</strong>: <code>event</code> - MouseEvent objekat koji sadrži informacije o događaju klika.</dd>
@@ -52,7 +52,7 @@
     <h2>Glavna logika</h2>
     <p>
         Komponenta omogućuje korisniku da klikne na platno i dodaje tačke. Kada se dodaju tri tačke, komponenta
-        proverava orijentaciju tačaka (da li su u smjeru kazaljke na satu) i prikazuje modal sa
+        provjerava orijentaciju tačaka (da li su u smjeru kazaljke na satu) i prikazuje modal sa
         informacijama o orijentaciji. Korisnik može zatvoriti modal, što će rezultirati resetovanjem komponente i brisanjem dodatih tačaka sa platna. Glavna logika komponente sastoji se od kombinacije funkcija i promenljivih koje omogućavaju interakciju sa platnom i obradu podataka o tačkama.
     </p>
     

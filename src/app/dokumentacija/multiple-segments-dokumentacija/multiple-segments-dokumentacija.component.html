@@ -33,14 +33,14 @@
 <p>Pronalazi presjek linijskih segmenata upotrebom sweep line algoritma.</p>
 <ul>
   <li>tacke: Tacka[] - niz tačaka koje pripadaju segmentima</li>
-  <li>povratna vrijednos: boolean - true ako postoji presjek, false inače</li>
+  <li>povratna vrijednost: boolean - true ako postoji presjek, false inače</li>
 </ul>
 <h3>predecessor(set: SetLinijskiSegment, linija: LinijskiSegment): LinijskiSegment | null</h3>
 <p>Pronalazi prethodnika linije u skupu segmenata koji presjekaju sweep line.</p>
 <ul>
   <li>set: Set&lt;LinijskiSegment&gt; - skup segmenata koji presjekaju sweep line</li>
   <li>linija: LinijskiSegment - linija za koju se traži prethodnik</li>
-  <li>povratna vrijednos: LinijskiSegment | null - prethodnik linije u skupu ili null ako takav prethodnik ne postoji</li>
+  <li>povratna vrijednost: LinijskiSegment | null - prethodnik linije u skupu ili null ako takav prethodnik ne postoji</li>
   
     </ul>
     <h3>successor(set: SetLinijskiSegment, linija: LinijskiSegment): LinijskiSegment | null</h3>
@@ -48,14 +48,14 @@
     <ul>
       <li>set: Set&lt;LinijskiSegment&gt; - skup segmenata koji presjekaju sweep line</li>
       <li>linija: LinijskiSegment - linija za koju se traži sljedbenik</li>
-      <li>povratna vrijednos: LinijskiSegment | null - sljedbenik linije u skupu ili null ako takav sljedbenik ne postoji</li>
+      <li>povratna vrijednost: LinijskiSegment | null - sljedbenik linije u skupu ili null ako takav sljedbenik ne postoji</li>
     </ul>
     <h3>getYAtX(x: number, linija: LinijskiSegment): number</h3>
     <p>Računa y koordinatu na linijskom segmentu za zadatu x koordinatu.</p>
     <ul>
       <li>x: number - x koordinata na kojoj se računa y</li>
       <li>linija: LinijskiSegment - linijski segment na kojem se računa y</li>
-      <li>povratna vrijednos: number - y koordinata na linijskom segmentu za zadatu x koordinatu</li>
+      <li>povratna vrijednost: number - y koordinata na linijskom segmentu za zadatu x koordinatu</li>
     </ul>
     <h3>orijentacija(p: Tacka, q: Tacka, r: Tacka): number</h3>
     <p>Određuje orijentaciju trougla za zadane tačke p, q i r.</p>
@@ -63,14 +63,14 @@
       <li>p: Tacka - prva tačka</li>
       <li>q: Tacka - druga tačka</li>
       <li>r: Tacka - treća tačka</li>
-      <li>povratna vrijednos: number - 0 ako su tačke kolinearne, 1 ako orijentacija ide u smjeru kazaljke na satu, 2 ako orijentacija ide obrnuto od smjera kazaljke na satu</li>
+      <li>povratna vrijednost: number - 0 ako su tačke kolinearne, 1 ako orijentacija ide u smjeru kazaljke na satu, 2 ako orijentacija ide obrnuto od smjera kazaljke na satu</li>
     </ul>
     <h3>segmentiPreklapanje(linija1: LinijskiSegment, linija2: LinijskiSegment): boolean</h3>
     <p>Provjerava da li se dva linijska segmenta preklapaju.</p>
     <ul>
       <li>linija1: LinijskiSegment - prvi linijski segment</li>
       <li>linija2: LinijskiSegment - drugi linijski segment</li>
-      <li>povratna vrijednos: boolean - true ako se linijski segmenti preklapaju, false inače</li>
+      <li>povratna vrijednost: boolean - true ako se linijski segmenti preklapaju, false inače</li>
     </ul>
     <h3>naSegmentu(p: Tacka, q: Tacka, r: Tacka): boolean</h3>
     <p>Provjerava da li tačka q leži na segmentu pruženom između tačaka p i r.</p>
@@ -78,13 +78,13 @@
       <li>p: Tacka - prva tačka</li>
       <li>q: Tacka - tačka za koju se provjerava da li leži na segmentu</li>
       <li>r: Tacka - druga tačka</li>
-      <li>povratna vrijednos: boolean - true ako tačka q leži na segmentu pruženom između tačaka p i r, false inače</li>
+      <li>povratna vrijednost: boolean - true ako tačka q leži na segmentu pruženom između tačaka p i r, false inače</li>
     </ul>
     <h3>presjecajuSe(linija1: LinijskiSegment, linija2: LinijskiSegment): boolean</h3>
     <p>Provjerava da li se dva linijska segmenta presijecaju.</p>
     <ul>
       <li>linija1: LinijskiSegment - prvi linijski segment</li>
       <li>linija2: LinijskiSegment - drugi linijski segment</li>
-      <li>povratna vrijednos: boolean - true ako se linijski segmenti presijecaju, false inače</li>
+      <li>povratna vrijednost: boolean - true ako se linijski segmenti presijecaju, false inače</li>
     </ul>
   
