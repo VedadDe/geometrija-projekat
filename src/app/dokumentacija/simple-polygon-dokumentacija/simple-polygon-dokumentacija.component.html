@@ -49,7 +49,7 @@
 <p>Glavna logika ove komponente je implementirana u nekoliko metoda:</p>
 <ul>
   <li><code>ngAfterViewInit(): void</code>: Metoda koja se poziva nakon što je komponenta inicijalizirana i platno je spremno za crtanje. Ova metoda dobavlja kontekst platna i postavlja njegovu veličinu na osnovu veličine prozora.</li>
-  <li><code>generisiPoligon(): void</code>: Metoda koja generira poligon sa <code>n</code> tačaka i sortira ih po polarnom uglu u odnosu na centroid poligona. Nakon toga se crta poligon i sve tačke poligona.</li>
+  <li><code>generisiPoligon(): void</code>: Metoda koja generiše poligon sa <code>n</code> tačaka i sortira ih po polarnom uglu u odnosu na centroid poligona. Nakon toga se crta poligon i sve tačke poligona.</li>
   <li><code>jeLiTackaUPoligonu(tacka:   x: number; y: number  ): boolean</code>: Metoda koja testira da li se tačka nalazi unutar poligona. Ova metoda koristi metodu <code>daLiSeLinijeSijeku()</code> za brojanje presjeka sa test linijom.</li>
   <li><code>onCanvasClick(event: MouseEvent): void</code>: Metoda koja se poziva prilikom klika na platno. Ako je vrijednost varijable <code>segment</code> <code>true</code>, tada se crta segment i testira se da li se segment sijekao sa poligonom. Ako je vrijednost varijable <code>segment</code> <code>false</code>, tada se testira da li se kliknuta tačka nalazi unutar poligona.</li>
   <li><code>orjentacijaPoligona(): void</code>: Metoda koja testira orijentaciju poligona na osnovu prvog momenta površine.</li>

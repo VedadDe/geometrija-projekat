@@ -15,7 +15,7 @@ export class PointsOrientationComponent {
   canvasRef!: ElementRef<HTMLCanvasElement>;
 
   prikaziModal = false;
-  jeU_smeruKazaljke = false;
+  jeU_smjeruKazaljke = false;
   tacke: Tacka[] = [];
 
   ngOnInit(): void {
@@ -50,12 +50,12 @@ export class PointsOrientationComponent {
 
       if (this.tacke.length === 3) {
         this.prikaziModal = true;
-        this.jeU_smeruKazaljke = this.daLiSuTackeUSmeruKazaljke(this.tacke);
+        this.jeU_smjeruKazaljke = this.daLiSuTackeUSmjeruKazaljke(this.tacke);
       }
     }
   }
 
-  daLiSuTackeUSmeruKazaljke(tacke: Tacka[]): boolean {
+  daLiSuTackeUSmjeruKazaljke(tacke: Tacka[]): boolean {
     const t1 = tacke[0];
     const t2 = tacke[1];
     const t3 = tacke[2];
@@ -67,7 +67,7 @@ export class PointsOrientationComponent {
 
   zatvoriModal(): void {
     this.prikaziModal = false;
-    this.jeU_smeruKazaljke = false;
+    this.jeU_smjeruKazaljke = false;
     this.tacke = [];
 
     const canvas = this.canvasRef.nativeElement;

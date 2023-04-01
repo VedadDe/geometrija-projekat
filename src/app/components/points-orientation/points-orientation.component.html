@@ -1,10 +1,10 @@
 <h4>Tačke se mogu dodati klikom na čitav (bijeli) ekran (odmah ispod ove upute). Potrebno je odabrati tri tačke nakon čega se javlja poruka na dnu stranice koja obavještava da li su tačke u smjeru kazaljke na satu ili obrnuto.
 </h4>
-<canvas #canvas (click)="klikNacanvas($event)"></canvas>
+<canvas #canvas style="border: 1px solid black;" (click)="klikNacanvas($event)"></canvas>
 
 <div class="modal" *ngIf="prikaziModal">
   <div class="modal-content">
-    <h2>Tačke {{ jeU_smeruKazaljke ? 'su u smjeru kazaljke' : 'nisu u smjeru kazaljke' }} na satu.</h2>
+    <h2>Tačke {{ jeU_smjeruKazaljke ? 'su u smjeru kazaljke' : 'nisu u smjeru kazaljke' }} na satu.</h2>
     <button (click)="zatvoriModal()">OK</button>
   </div>
 </div>
