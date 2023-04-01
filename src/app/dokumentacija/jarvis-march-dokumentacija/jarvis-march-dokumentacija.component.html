@@ -1,4 +1,4 @@
-<h1>Komponenta JarwisMarch</h1>
+<h1>Komponenta JarwisMarch & Graham Scan</h1>
 	<p>Ova Angular komponenta implementira dva algoritma za izračunavanje omotača skupa tačaka: Jarvisov marš i Grahamov algoritam. Komponenta omogućava generisanje slučajnih tačaka na platnu, crtanje tačaka i omotača na platnu i pokretanje algoritama.</p>
     <h2>Varijable</h2>
 <ul>
@@ -18,7 +18,7 @@
 
 <h2>Funkcije</h2>
 <h3><code>ngOnInit(): void</code></h3>
-<p>Metoda koja se poziva nakon inicijalizacije komponente. U ovoj metodi se postavljaju osnovne karakteristike platna, kao što su širina i visina, i definise se događaj klika na platnu. Kada korisnik klikne na platno, poziva se metoda <code>crtajTacke()</code> za iscrtavanje tačaka na platnu.</p>
+<p>Metoda koja se poziva nakon inicijalizacije komponente. U ovoj metodi se postavljaju osnovne karakteristike platna, kao što su širina i visina, i definiše se događaj klika na platnu. Kada korisnik klikne na platno, poziva se metoda <code>crtajTacke()</code> za iscrtavanje tačaka na platnu.</p>
 
 <h3><code>vektorskiProizvod(o:   x: number; y: number  , a:   x: number; y: number  , b:   x: number; y: number  ): number</code></h3>
 <p>Metoda koja izračunava vektorski proizvod dva vektora.</p>
@@ -99,7 +99,7 @@
 
 <h3>Glavna logika:</h3>
 <p>U glavnom dijelu koda se prvo definiše komponenta <code>JarwisMarchComponent</code>. Komponenta sadrži nekoliko metoda za crtanje tačaka, generisanje tačaka, pokretanje algoritama za određivanje omotača i crtanje omotača na platnu.</p>
-<p>U metodi <code>ngOnInit</code> se definiše šta će se desiti kada korisnik klikne na platno. Metoda prvo uzima platno preko ViewChild dekoratora, nakon čega definiše kontekst za crtanje na platnu. Nakon toga se definisuje širina i visina platna. Nakon toga se dodaje event listener na platno koji osluškuje klik korisnika. Kada korisnik klikne na platno, izračunavaju se koordinate klika u odnosu na platno, nakon čega se tačka dodaje u niz tačaka. Nakon dodavanja tačke u niz, poziva se metoda za crtanje tačaka.</p>
+<p>U metodi <code>ngOnInit</code> se definiše šta će se desiti kada korisnik klikne na platno. Metoda prvo uzima platno preko ViewChild dekoratora, nakon čega definiše kontekst za crtanje na platnu. Nakon toga se definiše širina i visina platna. Nakon toga se dodaje event listener na platno koji osluškuje klik korisnika. Kada korisnik klikne na platno, izračunavaju se koordinate klika u odnosu na platno, nakon čega se tačka dodaje u niz tačaka. Nakon dodavanja tačke u niz, poziva se metoda za crtanje tačaka.</p>
 <p>Metoda <code>vektorskiProizvod</code> računa vektorski proizvod tri tačke. Metoda se koristi u metodi <code>porediPolarniUgao</code>, koja poređuje tačke po polarnom uglu u odnosu na ovu tačku i konstruiše omotač.</p>
 <p>Metoda <code>jeSuprotnoOdSata</code> provjerava da li se tačke nalaze u suprotnom smjeru od kazaljke na satu. Ova metoda se koristi u Grahamovom algoritmu za određivanje omotača.</p>
 <p>Metoda <code>jarvisMarch</code> predstavlja implementaciju Jarvisovog marš algoritma za određivanje omotača skupa tačaka. Metoda pronalazi najnižu tačku i dodaje je u omotač. Zatim, metoda rotira liniju koja spaja trenutnu tačku i prethodnu tačku dok ne naiđe na tačku sa najvećim polarnim uglom. Ta tačka se dodaje u omotač i postaje trenutna tačka. Rotacija se ponavlja dok se ne vrati na početnu tačku.</p>
