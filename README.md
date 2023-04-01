@@ -3,7 +3,7 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.4.
 Potrebno je prvo instalirati angular klijenta sa npm i @angular/cli
 
-# Navigirati u (root) folder aplikacije. Potrebno paziti da nismo u "Folderu koji sadrži root folder" već u root folderu ( onom koji sadrži package.josn, src i itd)
+### Navigirati u (root) folder aplikacije. Potrebno paziti da nismo u "Folderu koji sadrži root folder" već u root folderu ( onom koji sadrži package.josn, src i itd)
 
 ## npm install
 
