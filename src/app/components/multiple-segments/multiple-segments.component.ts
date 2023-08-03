@@ -38,7 +38,7 @@ private static readonly EPSILON = 1e-9;
 ngAfterViewInit(): void {
   const context = this.canvas.nativeElement.getContext('2d');
   if (context === null) {
-    throw new Error('greska prilikom dobavljanja 2D context');
+    throw new Error('greska prilikom dobavljanja 2D contexta');
   }
   this.ctx = context;
 }
