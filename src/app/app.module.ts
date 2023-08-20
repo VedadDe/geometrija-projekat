@@ -21,6 +21,7 @@ import { PointInsideTriangleDokumentacijaComponent } from './dokumentacija/point
 import { JarvisMarchDokumentacijaComponent } from './dokumentacija/jarvis-march-dokumentacija/jarvis-march-dokumentacija.component';
 import { SimplePolygonDokumentacijaComponent } from './dokumentacija/simple-polygon-dokumentacija/simple-polygon-dokumentacija.component';
 import { MultipleSegmentsDokumentacijaComponent } from './dokumentacija/multiple-segments-dokumentacija/multiple-segments-dokumentacija.component';
+import { AllPossibleTiangulationsComponent } from './components/all-possible-tiangulations/all-possible-tiangulations.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { MultipleSegmentsDokumentacijaComponent } from './dokumentacija/multiple
     PointInsideTriangleDokumentacijaComponent,
     JarvisMarchDokumentacijaComponent,
     SimplePolygonDokumentacijaComponent,
-    MultipleSegmentsDokumentacijaComponent
+    MultipleSegmentsDokumentacijaComponent,
+    AllPossibleTiangulationsComponent
   ],
   imports: [
     BrowserModule,

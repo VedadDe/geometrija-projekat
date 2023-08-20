@@ -16,6 +16,7 @@ import { PointsDocumentatrionDokumentacijaComponent } from './dokumentacija/poin
 import { SetPointsTriangleDokumentacijaComponent } from './dokumentacija/set-points-triangle-dokumentacija/set-points-triangle-dokumentacija.component';
 import { SimplePolygonDokumentacijaComponent } from './dokumentacija/simple-polygon-dokumentacija/simple-polygon-dokumentacija.component';
 import { TwoLinesIntersectionsDokumentacijaComponent } from './dokumentacija/two-lines-intersections-dokumentacija/two-lines-intersections-dokumentacija.component';
+import { AllPossibleTiangulationsComponent } from './components/all-possible-tiangulations/all-possible-tiangulations.component';
 
 const routes: Routes = [  
 { path: 'jarwis-march', component: JarwisMarchComponent },//
@@ -25,6 +26,7 @@ const routes: Routes = [
 { path: 'simple-polygon', component: SimplePolygonComponent},//!
 { path: 'convex-check', component: ConvexCheckComponent},//
 { path: 'set-triangle', component: SetPointsTriangleComponent},//
+{ path: 'all-possible-triangulations', component: AllPossibleTiangulationsComponent},//
 { path: 'multiple-segments', component: MultipleSegmentsComponent},//!
 ///////////////////////////////////////////////////////////////////////////////////////////////
 { path: 'convex-check-dokumentacija', component: ConvexCheckDokumentacijaComponent},
